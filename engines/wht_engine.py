@@ -697,11 +697,19 @@ class WhtBot:
             return self._poll(lambda: self._cal_scan(frame),
                               lambda s: s.get("title") != before, 1500)
 
-        # years first (if the calendar has year arrows), then months.  A press that leaves the
-        # heading unchanged DEAD_PRESSES times in a row means the arrows are not working: stop
+        # years first (if the calendar has year arrows), then months - unless the month arrows alone need
+        # fewer presses (10.17: December 2025 -> January 2026 took 12 presses, one year forward and eleven
+        # months back, in both live runs of 9 Oct 2026; it is one press).  A press that leaves the heading
+        # unchanged DEAD_PRESSES times in a row means the arrows are not working: stop
         # (5 Oct 2026: 60 dead presses = about 110 s per month, then a wrong date anyway).
         dead, stuck = 0, False
-        for phase, limit in (("years", 12), ("months", 60)):
+        phases = (("years", 12), ("months", 60))
+        if start:
+            by_months = abs((year * 12 + month) - (start[0] * 12 + start[1]))
+            by_years = abs(year - start[0]) + abs(month - start[1])
+            if by_months <= by_years:
+                phases = (("months", 60),)
+        for phase, limit in phases:
             for _ in range(limit):
                 self.check()
                 cur = self._parse_title(scan.get("title"))

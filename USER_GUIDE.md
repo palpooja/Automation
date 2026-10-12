@@ -213,10 +213,12 @@ more from the portal home page.
 
 ## 19. How Level 3 is fetched (version 10.16)
 On the Ledgers page, "How Level 3 is fetched":
-- **Auto (recommended)** - for each tax type the first month is fetched the usual way (click, Export To Excel) and
-  also asked of URA directly; the two are compared. If they match, the other months are asked of URA directly:
-  no screen, no Back, so each month takes only as long as URA takes to answer. If they differ, that tax type
-  stays on the usual way and the Review page shows what differed.
+- **Auto (recommended)** - the first month fetched for a client goes the usual way (click, Export To Excel) and
+  is also asked of URA directly; the two are compared. If they match, every other month of that client - its other
+  tax types too (version 10.17; until 10.16 each tax type was proved on its own) - is asked of URA directly: no
+  screen, no Back, so each month takes only as long as URA takes to answer. If they differ, that tax type stays
+  on the usual way and the Review page shows what differed; a clear 'no' from URA on a later tax type switches
+  that tax type alone to the usual way.
 - **Direct request first, no proof** - the direct way from the first month (the usual way takes over if URA says no).
 - **Screen way only** - exactly as version 10.15.
 Lines of one payment that URA lists in another order (same date) count as the same; any other difference does not.
@@ -228,3 +230,15 @@ Closing the Chrome window is treated like pressing Stop: the run ends at once, n
 the Activity box says which steps were not started. Run again later: whatever is already saved is skipped.
 The Stop button is still the better way - it lets the current step finish and logs out of the URA portal.
 
+
+## 20. PAYE certificates that did not search, and other fixes (version 10.17)
+- If the log says "Search sent nothing to the portal", the next line now describes the button that was pressed and
+  the second press goes another way. After 16 s with nothing sent the year is recorded as failed with that reason
+  and is not tried a third time at the end of the client. Send `logs\paye_search_timeout_<year>.png` (every attempt
+  keeps its own copy: `_2`, `_3` ...) together with that log line.
+- A PAYE year whose page comes back showing another period than the one asked for is a "check" item on the Review
+  page, not "no records".
+- Ledgers: the first Back after a Level 3 month is no longer pressed twice while URA is still rebuilding Level 2;
+  an empty ledger (for example Local Excise Duty with no periods) is saved in seconds.
+- The run summary's Overview counts the same files as its Files sheet, also for a step that ended with an error.
+- Logout is pressed from the portal home page when the last step ended on another screen.

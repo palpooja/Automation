@@ -158,3 +158,24 @@ def test_yearly_ledger_uses_the_direct_way_too(page, mock_url, ledger_portal, tm
     head = list(rows[0])
     checks = {r[0]: r[head.index("Check")] for r in rows[1:] if r[head.index("Level 3 rows")]}
     assert set(checks.values()) == {"OK"}, checks
+
+
+def test_the_proof_is_done_once_per_client_not_once_per_tax_type(page, ledger, ledger_portal, tmp_path, capsys):
+    """10.17 (user's run analysis, 9 Oct 2026): the first month of EVERY tax type went the screen way (click,
+    Export, Back) to prove the direct way - more time than all the other months together.  One proof per client."""
+    frame = ledger()
+    assert _months(page, frame, tmp_path) == ["saved"] * 3                 # PAYE: proof on JUN, then direct
+    loads = ledger_portal.STATE["level2_loads"]
+    modes_before = len(ledger_portal.STATE["level3_modes"])
+    for m, amt in MONTHS:                                                 # a second tax type of the same client
+        frame, outcome = eng.level3_month(page, frame, tmp_path / "vat", "Value Added Tax", m, amt)
+        assert outcome == "saved"
+    assert ledger_portal.STATE["level3_modes"][modes_before:] == ["cors"] * 3, "no screen-way proof again"
+    assert ledger_portal.STATE["level2_loads"] == loads, "no Back, so Level 2 was never rebuilt"
+    out = capsys.readouterr().out
+    assert "Value Added Tax: the direct way was proved on this client's earlier tax type" in out, out
+    # a new client (DIRECT_STATE cleared, as run_job_on_page does) proves again
+    eng.DIRECT_STATE.clear()
+    frame = ledger()
+    assert _months(page, frame, tmp_path / "next") == ["saved"] * 3
+    assert "navigate" in ledger_portal.STATE["level3_modes"], "the new client's first month: the screen way (proof)"

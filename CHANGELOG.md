@@ -1,5 +1,72 @@
 # Changelog
 
+## 10.17 - 12 October 2026 (user: "fix the bugs and make the bot faster and more accurate" - run analysis of 9 Oct 2026, Tronics vs Telecom)
+
+### 1. PAYE certificates: the Search that never reached the portal (the main failure of both runs)
+- Was: on the Uganda run the Search press sent nothing four times (8 s, pressed again, 60 s, give up; then the same
+  again from the home page; then the whole thing once more at the end of the client) - 4 min 34 s for nothing.
+  Cause found in the code: the Search button was looked for with a bare `button:has-text('Search')` in EVERY frame,
+  the outer ura.go.ug page first - that page has the public site's own search box, and pressing it sends nothing to
+  the portal.  (Reproduced on the test portal with an outer page that has a site search.)
+- Now: only the PAYE form's own Search, in the frame that holds the form.  If a press still sends nothing: the log
+  describes the button (tag, type, onclick, form, Period and Return For values), the second press goes another way
+  (a mouse click, then the button's own handler), and after 8 s more with nothing sent that search is over (16 s,
+  not 68 s).  A message box after the press ('Please select Period') ends the wait at once with the message as the
+  reason.  A year whose search never reached the portal is recorded as failed with that reason and is NOT put off to
+  the end of the client again (it fails the same way every time); a search the portal received but did not answer
+  still gets the end-of-client second try.
+- Page copies: every attempt keeps its own file (`paye_search_timeout_<year>.html/.png`, then `_2`, `_3` ...) - the
+  second try used to overwrite the first attempt's evidence.
+- 'No employees listed' when the page came back showing ANOTHER period than the one asked for is now a 'check' item
+  ("the page shows period '2024-2025', not '2025-2026'") instead of 'no records' - the suspected false negative of
+  the Tronics run (a year with 12.6M PAYE paid and no employees).
+
+### 2. Ledgers: the first Back press and the empty Local Excise Duty ledger
+- Back after a Level 3 month (every first month of every tax type, 11-29 s each): the press had worked, Level 2 was
+  only slow to come back, and the program pressed Back again after a fixed 10 s.  Now the browser's own page requests
+  show whether the press took: a press that asked the portal for nothing within 6 s is pressed again at once; a press
+  that did ask for a page is given up to 60 s (x Internet speed) with a heartbeat, never pressed twice.  The Back
+  button is pressed by script first (the portal rule), the mouse click is the fallback.  Yearly ledgers the same.
+- A ledger with no period (Local Excise Duty, 21-25 s to save): the Level 2 table was waited for by a month row for
+  20 s.  It is now taken as soon as its headings show; `read_level2_table` reads a header-only table as 0 periods.
+
+### 3. Ledgers: the direct way is proved once per client, not once per tax type
+- Was: the first month of every tax type by the screen way (click, Export, Back) plus a direct copy to compare -
+  on Tronics those three first months cost more than the other 37 months together.
+- Now (Auto): the proof passed on one tax type counts for the client's other tax types ("the direct way was proved
+  on this client's earlier tax type").  A clear 'no' from URA still switches that tax type to the screen way; a new
+  client is proved again.  Ledgers page label: "Auto - direct request, proved once per client on the first month fetched".
+
+### 4. WHT certificates: December to January is one calendar press, not twelve
+- The calendar walked years first, then months: December 2025 -> January 2026 was one year forward and eleven months
+  back.  The month arrows alone are used when they need fewer presses; far moves still use the year arrows.
+
+### 5. Run summary: the Overview counts what the Files sheet lists
+- Certificates showed 0 files in the Overview after the PAYE error although 15 WHT files were saved; Returns showed
+  41 against 42 in the Files sheet.  The Overview 'Files' is now the number of file rows the step recorded, also when
+  the step ended with an error (a step that records no file rows keeps its own count).
+
+### 6. Logout from any screen
+- 'Could not find the Logout button' when the last step ended on another screen (the PAYE form), so the URA session
+  stayed open.  The portal home page is opened first, once, and Logout pressed there.
+
+### Tests
+- 229 tests, all passing (was 214).  New: tests/auto/test_paye_live_structure.py (+4: the outer page's site search,
+  a press that never sends, a message box after the press, a page back for another period),
+  tests/auto/test_ledger_back_and_empty.py (4), test_ledger_direct.py (+1), test_wht_real_calendar.py (+2),
+  test_window.py (+1), tests/auto/test_logout_from_any_screen.py (3).  Test portal: paye_server 'alert_presses' /
+  'answer_period', Portal/paye_outer_sitesearch.html; ledger_server 'no_months' / 'dead_backs' and an Export To
+  Excel button on the monthly Level 2.
+- The five window run-loop tests no longer need an internet connection (the connection check is a stand-in there);
+  the ledger_portal fixture clears the route state between tests.
+
+### Not changed (findings of the run analysis that are URA's or need a decision)
+- The oldest VAT returns (filed July-September 2025) take 60-70 s each on every connection: URA's side.
+- Empty return-type checks, page turns and WHT searches cost ~30 s each from abroad and 2-5 s from Uganda: the
+  connection.  Return types a client never files can be unticked on the Returns page.
+- January 2026 WHT 'No records' in 7 s on the Tronics run: nothing in the code explains it; the Telecom run took a
+  normal 4 s.  Re-check by hand if it matters for the reco.
+
 ## 10.16 - 9 October 2026 (user: "build direct but also keep current way")
 
 ### Level 3 by the direct way, the current (screen) way kept as the backup

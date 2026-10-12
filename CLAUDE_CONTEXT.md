@@ -32,7 +32,7 @@ You are helping maintain **URA Suite**, a Windows desktop program (Python 3.11+,
 | Returns page options | `modules/returns.py` |
 | Returns portal behaviour (dates, categories, print, mhtml, paging) | `engines/returns_pw.py` |
 | Ledger/certificate/profile page options | `modules/ledger.py` |
-| Ledger portal behaviour | the relevant function of `engines/ledger_engine.py` (it is 3,100 lines — send only the function and its line numbers) |
+| Ledger portal behaviour | the relevant function of `engines/ledger_engine.py` (it is 4,400 lines — send only the function and its line numbers) |
 | WHT Receivable page options and file naming | `modules/wht_receivable.py` |
 | WHT portal behaviour (calendar, search, scrape, page copy) | `engines/wht_engine.py` |
 | WHT Excel/PDF/CSV layout and data cleaning | `engines/wht_outputs.py` |
@@ -130,6 +130,20 @@ module must not rely on where the previous one left the portal. WHT generate_for
   generatePAYETCC, at most 5 ticks per press (var count = 5). Engine: engines/paye_engine.py; test copy of the
   live screens: tests/mock_portal/paye_server.py. Ask for a page capture of #divPostContent if its columns ever look wrong
   (the first one is saved as logs/paye_monthwise_example.html on every run).
+
+## Version 10.17 notes (12 Oct 2026 - run analysis Tronics vs Telecom)
+- PAYE Search: ONLY the form's own button, in the form's frame (paye_engine.SEL['search'] - never a bare
+  "button:has-text('Search')": the outer ura.go.ug page has a site search that sends nothing). A press that sends
+  nothing is described in the log, pressed again another way, and given up after PRESS_AGAIN_S + UNSENT_GIVE_UP_S;
+  SearchTimeout.sent=False keeps that year out of the end-of-client second try. save_evidence numbers repeated stems.
+- Ledger Back after Level 3: ledger_engine.back_to_level2 (page requests show whether the press took; BACK_TOOK_S,
+  LEVEL2_AFTER_BACK_S). ledger_table(require_months=False) / export_level2_to_excel(has_months=) for empty ledgers.
+- Direct way proof: once per client (DIRECT_STATE[CLIENT_PROOF_KEY]); DIRECT_STATE is cleared per client run and by
+  the ledger_portal test fixture.
+- WHT calendar: pick_month takes months-only when it needs no more presses than years-then-months.
+- app.py Overview 'Files' = file rows recorded by the step (also after an error). core.session.logout goes to the
+  portal home page once when no Logout button is on screen.
+- Tests: 229. The window run-loop tests stub core.net.wait_online (no internet needed).
 
 ## Version 10 notes
 - Steps: 1 Returns, 2 Ledgers, 3 Certificates (WHT + PAYE), 4 Review; one shared period (year-month) for all.

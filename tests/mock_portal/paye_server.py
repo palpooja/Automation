@@ -25,16 +25,20 @@ EMPLOYEES = {      # invented: (TIN, name, chargeable income, tax deducted, TCC 
     "2024-2025": [(f"10000001{n:02d}", f"MR. TEST WORKER {n}", "4,800,000.00", "300,000.00", "") for n in range(1, 8)],
 }
 STATE = {"search_delay": 0.6, "searches": [], "monthwise": [], "generated": [], "drop_presses": 0,
-         "hang": {}}
+         "hang": {}, "alert_presses": 0, "answer_period": None}
 # 10.15 (live 8 Oct 2026, 22:40: 'no results within 60 s after Search'):
 #   drop_presses  the next page's Search press is swallowed this many times (the page's frmSubmitFlag is set
 #                 but nothing is sent) - a press that never reaches the portal;
 #   hang          {period: n} - the next n searches for that period get no answer (the server sits on them).
+# 10.17 (live 9 Oct 2026: four presses, nothing ever sent):
+#   alert_presses  the next page's Search press shows a message box (like the page's own 'Please select
+#                  Period') this many times and sends nothing;
+#   answer_period  the searched page comes back showing THIS period instead of the one asked for.
 
 
 def reset(**kw):
     STATE.update({"search_delay": 0.6, "searches": [], "monthwise": [], "generated": [], "drop_presses": 0,
-                  "hang": {}})
+                  "hang": {}, "alert_presses": 0, "answer_period": None})
     STATE.update(kw)
 
 
@@ -55,6 +59,7 @@ function showBrtab() { var o = document.getElementById('brtrid');
 function validate() { if (!document.getElementById('period').value) { alert('Please select Period'); return false; }
   return true; }
 function searchPayeDtls() { if (dropPress > 0) { dropPress--; frmSubmitFlag = 1; return false; }
+  if (alertPress > 0) { alertPress--; alert('Please select Period'); return false; }
   if (validate()) {
   document.TaxCreditCertForm.action = '/Portal/genTaxCreditCertController/searchPayeEntry';
   submitform(document.TaxCreditCertForm); } else { return false; } }
@@ -91,8 +96,9 @@ def _form(period="", grid=""):
                    for p in PERIODS)
     rows = grid and ('<table class="FORM_TAB_BORDER"><tr><td>' + grid + '</td></tr></table>')
     drop, STATE["drop_presses"] = STATE["drop_presses"], 0
+    alert_n, STATE["alert_presses"] = STATE["alert_presses"], 0
     return (f"""<html><head><title>Generate PAYE Tax Credit Certificate | eTax</title>
-<script>var dropPress = {drop};</script>{SCRIPT}</head><body>
+<script>var dropPress = {drop}; var alertPress = {alert_n};</script>{SCRIPT}</head><body>
 <form name="TaxCreditCertForm" id="TaxCreditCertForm" method="POST">
 <input type="hidden" name="actionCode" value="TAXCREDITCIRTVO"><input type="hidden" name="selectedBranchId" id="selectedBranchId" value="">
 <table class="FORM_TAB_BORDER"><thead><tr><th>Generate PAYE Tax Credit Certificate</th></tr></thead>
@@ -159,6 +165,8 @@ def handle(handler, method):
             STATE["hang"][period] -= 1
             time.sleep(20)                       # no answer while the program waits (its wait is shortened)
         time.sleep(STATE["search_delay"])
+        if STATE.get("answer_period"):           # the page comes back for another period than the one asked
+            period = STATE["answer_period"]
         html = _form(period, _grid(period))
     elif name == "generatePAYETCC" and method == "POST":
         period = form.get("period", [""])[0]

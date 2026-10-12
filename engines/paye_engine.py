@@ -30,8 +30,12 @@ MENU_ITEM = "Generate Tax Credit Certificate for Pay As You Earn"
 SEL = {
     "branch": ["#retBrnch", "select[name='retBrnch']"],
     "period": ["#period", "select[name='period']"],
+    # 10.17: only the PAYE form's own Search.  A bare "button:has-text('Search')" used to be tried in EVERY frame,
+    # the outer ura.go.ug page first - a press on the public site's search sends nothing to the portal
+    # (live 9 Oct 2026: 'Search sent nothing to the portal in 8 s' four times, 4 min 34 s for nothing).
     "search": ["#TaxCreditCertForm button:has-text('Search')", "#TaxCreditCertForm input[value='Search']",
-               "button:has-text('Search')", "input[value='Search']"],
+               "form[name='TaxCreditCertForm'] button:has-text('Search')",
+               "form[name='TaxCreditCertForm'] input[value='Search']"],
     "generate": ["input[value='GenerateTCC']", "input[value*='GenerateTCC' i]",
                  "input[value*='Generate' i]", "button:has-text('Generate')"],
     "popup": ["#divPostContent"],
@@ -41,8 +45,21 @@ SEL = {
 }
 WAIT_S = 60
 PRESS_AGAIN_S = 8        # 10.15: Search sent nothing to the portal in this time -> press it once more
+UNSENT_GIVE_UP_S = 8     # 10.17: after the second press, still nothing sent in this time -> that search is over
+                         # (the wait is for URA's answer; there is nothing to wait for when nothing was sent)
 RELOAD_GRACE_S = 10      # after the PAYE page has reloaded: how long a list may take to draw (ends when it shows)
 MONTHWISE_WAIT_S = 30
+# a request that counts as 'the search reached the portal': the live action (searchPayeEntry), or any other
+# form POST to the PAYE certificate controller that is not one of the two other known actions
+SEARCH_URL_RE = re.compile(r"searchpaye|gentaxcreditcertcontroller/(?!getmonthsdtls|generatepayetcc|loadpayepage)",
+                           re.I)
+# what the Search button and its form look like, for the log when a press sends nothing (10.17)
+BUTTON_INFO_JS = """el => { const f = el.form || el.closest('form');
+  return {tag: el.tagName.toLowerCase(), type: el.getAttribute('type') || '', onclick: (el.getAttribute('onclick') || '').slice(0, 120),
+          form: f ? (f.getAttribute('name') || f.id || '') : '', action: f ? (f.getAttribute('action') || '') : '',
+          visible: !!(el.offsetWidth || el.offsetHeight), disabled: !!el.disabled,
+          period: (document.querySelector('#period') || {}).value || '',
+          branch: (document.querySelector('#retBrnch') || {}).value || ''}; }"""
 
 
 def financial_years(period_from, period_to):
@@ -151,7 +168,13 @@ LIMIT_JS = "() => (typeof count === 'number' && count > 0) ? count : 5"
 
 
 class SearchTimeout(RuntimeError):
-    """No answer to Search in time (10.15: the year is tried once more, then recorded as failed)."""
+    """No answer to Search in time (10.15: the year is tried once more, then recorded as failed).
+    `sent` (10.17): whether the search reached the portal at all.  A search that never left the browser is a
+    fault on the page, not a slow portal: it is not put off to the end of the client a third and fourth time."""
+
+    def __init__(self, message, sent=True):
+        super().__init__(message)
+        self.sent = sent
 
 
 class PayeBot:
@@ -169,10 +192,40 @@ class PayeBot:
 
     def _on_request(self, request):
         try:
-            if "searchpayeentry" in request.url.lower():
+            url = request.url
+            if "searchpayeentry" in url.lower() or (request.method == "POST" and SEARCH_URL_RE.search(url)):
                 self._searches_sent.append(time.monotonic())
         except Exception:
             pass
+
+    def _button_info(self, btn):
+        """One line describing the Search button, for the log when a press sends nothing."""
+        try:
+            d = btn.evaluate(BUTTON_INFO_JS, timeout=3000)
+            return (f"<{d['tag']} type='{d['type']}' onclick='{d['onclick']}'> in form '{d['form']}' "
+                    f"(action '{d['action']}', visible {d['visible']}, disabled {d['disabled']}, "
+                    f"Period '{d['period']}', Return For '{d['branch']}')")
+        except Exception as e:
+            return f"(could not describe the button: {type(e).__name__})"
+
+    def _press_search(self, bfr, btn, how):
+        """how 1: a script click (the usual way on this portal).  how 2 (10.17): a mouse click on the button,
+        then the button's own handler / the form's submit - a different route, since the first did nothing."""
+        self._clear_guard(bfr)
+        if how == 1:
+            btn.evaluate("el => { setTimeout(() => el.click(), 0); }", timeout=5000)
+            return "script click"
+        try:
+            btn.click(timeout=4000)
+            return "mouse click"
+        except Exception:
+            pass
+        self._clear_guard(bfr)
+        btn.evaluate("""el => { setTimeout(() => {
+            if (typeof el.onclick === 'function') { el.onclick(new MouseEvent('click', {bubbles: true})); return; }
+            const f = el.form || el.closest('form');
+            if (f) { if (f.requestSubmit) f.requestSubmit(); else f.submit(); } }, 0); }""", timeout=5000)
+        return "the button's own handler"
 
     @staticmethod
     def _clear_guard(frame):
@@ -272,32 +325,57 @@ class PayeBot:
                 f.evaluate(MARK_JS)
             except Exception:
                 pass
-        bfr, btn = self.find([f"#TaxCreditCertForm {s}" if not s.startswith("#") else s
-                              for s in ("button:has-text('Search')", "input[value='Search']")]
-                             + SEL["search"], 5)
+        # 10.17: the Search button of the PAYE form, in the frame that holds the form - never a 'Search' of
+        # another frame (the outer ura.go.ug page has its own site search, which sends nothing to the portal)
+        bfr, btn = fr, None
+        for sel in SEL["search"]:
+            try:
+                loc = fr.locator(sel).first
+                if loc.count():
+                    btn = loc
+                    break
+            except Exception:
+                continue
         if btn is None:
-            raise RuntimeError("the Search button was not found")
-        self._clear_guard(bfr)               # a search that got no answer left the page's guard set
+            bfr, btn = self.find(SEL["search"], 5)
+        if btn is None:
+            raise RuntimeError("the Search button was not found on the PAYE certificate form")
+        n_dialogs = len(self.dialogs)        # messages the page shows after the press are reported (10.17)
         # the time BEFORE pressing: the browser may report the request while the press itself is still
         # returning (seen on the test portal - the search was sent, yet it was pressed a second time)
         t0 = time.monotonic()
-        btn.evaluate("el => { setTimeout(() => el.click(), 0); }", timeout=5000)
+        self._press_search(bfr, btn, 1)      # clears the page's send-once guard first
         self.no_list_reason = ""
         end = t0 + WAIT_S
         reloaded_at = None
-        pressed_again = False
+        pressed_again_at = None
         while time.monotonic() < end:
             self.check()
-            if not pressed_again and time.monotonic() - t0 > PRESS_AGAIN_S and not self._sent_since(t0):
+            if len(self.dialogs) > n_dialogs and not self._sent_since(t0):
+                # the page refused the search with a message box (a validation message): waiting cannot help
+                said = "; ".join(self.dialogs[n_dialogs:])[:200]
+                self.log(f"  The portal answered the Search press with a message: '{said}'.")
+                raise SearchTimeout(f"the page refused the search: '{said}' (the search never reached the portal)",
+                                    sent=False)
+            if pressed_again_at is None and time.monotonic() - t0 > PRESS_AGAIN_S and not self._sent_since(t0):
                 # 10.15 (live 8 Oct 2026, 22:40: 60 s with no answer): the press never reached the portal.
                 # The page's own guard (frmSubmitFlag) ignores a second press, so it is cleared first.
-                pressed_again = True
-                self.log(f"  Search sent nothing to the portal in {PRESS_AGAIN_S} s - pressing it again.")
+                # 10.17: pressed another way (a mouse click, then the button's own handler) and described in
+                # the log, so the page copy and the log together show why the first press did nothing.
+                pressed_again_at = time.monotonic()
+                self.log(f"  Search sent nothing to the portal in {PRESS_AGAIN_S} s - pressing it again "
+                         f"(button: {self._button_info(btn)}).")
                 try:
-                    self._clear_guard(bfr)
-                    btn.evaluate("el => { setTimeout(() => el.click(), 0); }", timeout=5000)
+                    how = self._press_search(bfr, btn, 2)
+                    self.log(f"  Search pressed again by {how}.")
                 except Exception as e:
                     self.log(f"  Could not press Search again ({type(e).__name__}).")
+            if (pressed_again_at is not None and time.monotonic() - pressed_again_at > UNSENT_GIVE_UP_S
+                    and not self._sent_since(t0) and not self._form_frame_left(fr)):
+                # 10.17: two presses, two ways, and the browser sent nothing: the page is not sending the form.
+                # Waiting 60 s for an answer that was never asked for only cost time (live 9 Oct 2026).
+                raise SearchTimeout(f"the Search press sent nothing to the portal ({PRESS_AGAIN_S + UNSENT_GIVE_UP_S:.0f} s, "
+                                    "pressed twice, two ways) - the search never reached the portal", sent=False)
             kinds = []
             for f in self.frames():
                 try:
@@ -326,16 +404,46 @@ class PayeBot:
                                        f"employees list and no message (waited {RELOAD_GRACE_S} s more)")
                 return "none"
             self.page.wait_for_timeout(300)
-        sent = "the portal received the search" if self._sent_since(t0) else "the search never reached the portal"
-        raise SearchTimeout(f"no results within {WAIT_S} s after Search ({sent})")
+        was_sent = self._sent_since(t0)
+        sent = "the portal received the search" if was_sent else "the search never reached the portal"
+        raise SearchTimeout(f"no results within {WAIT_S} s after Search ({sent})", sent=was_sent)
+
+    @staticmethod
+    def _form_frame_left(fr):
+        """True when the frame that held the PAYE form has navigated away (an answer is on its way)."""
+        try:
+            return not fr.evaluate("() => !!document.querySelector('#TaxCreditCertForm, #period')")
+        except Exception:
+            return True
+
+    def period_on_page(self):
+        """The Period the PAYE page shows now (its value, e.g. '2025-2026'), or '' when unreadable (10.17)."""
+        f = getattr(self, "evidence_frame", None)
+        for frame in ([f] if f is not None else []) + self.frames():
+            try:
+                v = frame.evaluate("() => { const p = document.querySelector('#period'); return p ? p.value : null; }")
+            except Exception:
+                continue
+            if v is not None:
+                return str(v)
+        return ""
 
     def save_evidence(self, stem):
-        """A copy of the PAYE page and a screenshot, so a 'no employees' answer can be checked later."""
+        """A copy of the PAYE page and a screenshot, so a 'no employees' answer can be checked later.
+        10.17: a stem already used in this log folder gets _2, _3 ... - the second try used to overwrite the
+        first try's page copy (live 9 Oct 2026), so the evidence of the first attempt was lost."""
         if self.debug_dir is None:
             return []
         saved = []
         try:
             self.debug_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            return saved
+        base, n = stem, 1
+        while (self.debug_dir / f"{stem}.html").exists() or (self.debug_dir / f"{stem}.png").exists():
+            n += 1
+            stem = f"{base}_{n}"
+        try:
             f = getattr(self, "evidence_frame", None) or self.page.main_frame
             path = self.debug_dir / f"{stem}.html"
             path.write_text(f.content(), encoding="utf-8")
@@ -619,12 +727,25 @@ def run(page, tin, period_from, period_to, out_dir, log, check, record,
             continue
         except SearchTimeout as e:
             record(sec, "failed", str(e))
-            if failed is not None:
+            if failed is not None and e.sent:
                 failed.append(fy)
+            elif failed is not None:
+                # 10.17: a press that never left the browser fails the same way every time (live 9 Oct 2026:
+                # the end-of-client second try repeated the same 2 min 15 s) - not put off again
+                log(f"  {fy_label(fy)} is not tried again at the end of the client: the search never reached "
+                    "the portal (a page problem, not a slow portal) - see the page copies in the log folder.")
             continue
         if kind == "none" or not bot.grid().get("rows"):
             why = getattr(bot, "no_list_reason", "") or "no employees list on the page"
             saved = bot.save_evidence(f"paye_no_employees_{fy}")
+            shown = bot.period_on_page()
+            if shown and shown != fy:
+                # 10.17: the page came back for another period - the chosen year was not applied (a 'no
+                # employees' answer for a year with payroll was suspected in the live run of 9 Oct 2026)
+                log(f"  The PAYE page shows period '{shown}', not {fy_label(fy)} - {why}. Check this year by hand."
+                    + (f" Page copy: {saved[0].name}" if saved else ""))
+                record(sec, "check", f"the page shows period '{shown}', not '{fy}' - {why}")
+                continue
             log(f"  No employees listed for {fy_label(fy)} - {why}."
                 + (f" Page copy: {saved[0].name}" if saved else ""))
             record(sec, "no records", f"No employees list: {why}")
@@ -669,7 +790,8 @@ def run(page, tin, period_from, period_to, out_dir, log, check, record,
 
 
 def _search_twice(bot, fy, log, reopen=None):
-    """bot.search(fy); on no answer: a page copy, then once more (after reopen() when given)."""
+    """bot.search(fy); on no answer: a page copy, then once more (after reopen() when given) - at most one retry.
+    Every page copy keeps its own name (save_evidence numbers them), so no attempt overwrites another's."""
     try:
         return bot.search(fy)
     except SearchTimeout as e:
@@ -681,7 +803,7 @@ def _search_twice(bot, fy, log, reopen=None):
     try:
         return bot.search(fy)
     except SearchTimeout as e:
-        saved = bot.save_evidence(f"paye_search_timeout_{fy}_2")
+        saved = bot.save_evidence(f"paye_search_timeout_{fy}")
         log(f"  {e} - {fy_label(fy)} recorded as failed; the other years go on."
             + (f" Page copy: {', '.join(p.name for p in saved)}." if saved else ""))
         raise

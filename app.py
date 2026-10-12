@@ -607,6 +607,13 @@ class App(tk.Tk):
                                 row = {"when": started.strftime("%d/%m/%Y %H:%M"), "client": c["name"],
                                        "login": c["login"], "module": m.title, "status": "Completed",
                                        "files": 0, "seconds": 0}
+                                n_before = len(ctx.items)
+
+                                def files_recorded():
+                                    # 10.17: the Overview counts the same files the Files sheet lists for this
+                                    # step (live 9 Oct 2026: Certificates showed 0 files after the PAYE error
+                                    # although 15 WHT files were saved; Returns 41 against 42 in Files)
+                                    return sum(1 for it in ctx.items[n_before:] if it["file"])
                                 try:
                                     if mi > 0 and browser_gone(page):
                                         raise BrowserClosed(f"The browser window was closed before {m.title}")
@@ -616,6 +623,7 @@ class App(tk.Tk):
                                     res = m.run(ctx, c, options[m.id], page) or {}
                                     row.update({k: v for k, v in res.items()
                                                 if isinstance(v, (int, str, bool))})
+                                    row["files"] = files_recorded() or int(res.get("files") or 0)
                                     if res.get("skipped"):
                                         row["status"] = "Skipped"
                                     bad = sum(1 for it in ctx.items[n_before:]
@@ -638,6 +646,7 @@ class App(tk.Tk):
                                         raise BrowserClosed(f"The browser window was closed during {m.title}") from e
                                     row["status"] = f"Error: {type(e).__name__}"
                                     row["note"] = ctx.scrub(e)[:300]
+                                    row["files"] = files_recorded()       # what was saved before the error
                                     ctx.record(f"{m.title} (whole module)", "failed", str(e))
                                     ctx.log(f"{m.title} failed for {c['name']}: {e}", "err")
                                     ctx.log(traceback.format_exc().strip().splitlines()[-1], "err")

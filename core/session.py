@@ -62,25 +62,36 @@ def logout(page, log):
         log("Not logged out of the URA portal: the browser window was closed.")
         return
     guard = guard_for(page, log)
-    for fr in list(page.frames):
-        for sel in LOGOUT_SELECTORS:
-            try:
-                loc = fr.locator(sel).first
-                if not loc.count():
+    for round_ in (1, 2):
+        for fr in list(page.frames):
+            for sel in LOGOUT_SELECTORS:
+                try:
+                    loc = fr.locator(sel).first
+                    if not loc.count():
+                        continue
+                    with guard.expecting("logout"):
+                        loc.evaluate("el => el.click()")
+                        end = time.monotonic() + LOGOUT_WAIT_S
+                        while time.monotonic() < end:
+                            page.wait_for_timeout(250)
+                            if not _logout_button_present(page):
+                                log("Logged out of the URA portal.")
+                                return True
+                    log("Logout was pressed but the portal did not confirm it - the browser is being "
+                        "closed anyway (the portal ends the session after its own time limit).", "warn")
+                    return False
+                except Exception:
                     continue
-                with guard.expecting("logout"):
-                    loc.evaluate("el => el.click()")
-                    end = time.monotonic() + LOGOUT_WAIT_S
-                    while time.monotonic() < end:
-                        page.wait_for_timeout(250)
-                        if not _logout_button_present(page):
-                            log("Logged out of the URA portal.")
-                            return True
-                log("Logout was pressed but the portal did not confirm it - the browser is being "
-                    "closed anyway (the portal ends the session after its own time limit).", "warn")
-                return False
-            except Exception:
-                continue
+        if round_ == 1:
+            # 10.17: the Logout button lives on the portal home page; a step that ended on another screen
+            # (live 9 Oct 2026: the PAYE certificate form) left the URA session open server-side.
+            log("The Logout button is not on this screen - opening the portal home page first.")
+            try:
+                if not eng.ensure_portal_home(page):
+                    break
+            except Exception as e:
+                log(f"The portal home page did not open ({type(e).__name__}).", "warn")
+                break
     log("Could not find the Logout button - the browser is being closed anyway.")
     return False
 

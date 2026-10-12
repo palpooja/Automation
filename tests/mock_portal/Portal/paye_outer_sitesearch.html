@@ -1,0 +1,8 @@
+<html><body><h2>ura.go.ug (outer page) - PAYE certificates, the public site's own search box above the portal frame</h2>
+<!-- live 9 Oct 2026: a 'Search' found in the outer frame was pressed instead of the PAYE form's Search -->
+<form id="site-search" onsubmit="return false;"><input type="text" placeholder="Search the website">
+  <button type="button" onclick="document.getElementById('site-search-note').textContent='site search pressed';">Search</button>
+  <span id="site-search-note"></span></form>
+<div id="process-static-modal" style="display:none"><button class="btn-secondary">Close</button></div>
+<iframe name="portal" id="portal" src="/Portal/genTaxCreditCertController/loadPayePage" style="width:1200px;height:700px"></iframe>
+</body></html>

@@ -117,7 +117,7 @@ class LedgerModule(Module):
         self._sync_annual()
         return f
 
-    ROUTES = [("auto", "Auto - direct request, proved on the first month of each tax type"),
+    ROUTES = [("auto", "Auto - direct request, proved once per client on the first month fetched"),
               ("direct", "Direct request first, no proof (screen way if it fails)"),
               ("screen", "Screen way only - click, Export To Excel (as version 10.15)")]
 

@@ -126,6 +126,8 @@ def _run_with_fakes(a, app_module, monkeypatch, close_after=None, quiet=False, r
         yield FakePage()
     monkeypatch.setattr(_session, "open_session", fake_session)
     monkeypatch.setattr(_session, "go_home", lambda *a, **k: None)
+    from core import net as _net                           # the run loop, not the internet, is under test
+    monkeypatch.setattr(_net, "wait_online", lambda *a, **k: True)
     monkeypatch.setattr(_voice, "say", lambda parts, choice="1": said.append(parts) or True)
 
     def make_run(m):
@@ -223,3 +225,33 @@ def test_a_step_that_failed_as_a_whole_runs_again_after_the_other_steps(app, mon
     assert [t for lg, t, _ in order if lg == "1000000002"] == titles, "the other client: no second try"
     assert f"----- {first.title} - second try -----" in log
     assert f"{first.title}: second try finished." in log
+
+
+def test_overview_counts_the_files_the_step_recorded_also_when_it_ends_with_an_error(app, monkeypatch, fake_data_dir):
+    """10.17 (live 9 Oct 2026): Certificates saved 15 WHT files, then the PAYE part raised - the Overview showed
+    0 files; Returns showed 41 in the Overview but 42 in the Files sheet (its status workbook).  The Overview now
+    counts the file rows the step recorded, the same rows the Files sheet lists."""
+    a, app_module, shown = app
+    from core import store
+    first, second = app_module.MODULES[0], app_module.MODULES[1]
+
+    def factory(m):
+        def run(ctx, client, options, page):
+            if m is first:                              # 2 documents + a status workbook, reports 2
+                ctx.record("A: return 1", "saved", "", "C:/out/r1.pdf")
+                ctx.record("A: return 2", "saved", "", "C:/out/r2.pdf")
+                ctx.record("Returns_Status.xlsx", "saved", "", "C:/out/Returns_Status.xlsx")
+                return {"files": 2}
+            if m is second:                             # files saved, then the step dies
+                ctx.record("WHT Payee JUL-2025", "saved", "", "C:/out/w1.xlsx")
+                ctx.record("WHT Payee AUG-2025", "saved", "", "C:/out/w2.xlsx")
+                raise RuntimeError("the PAYE page did not open")
+            return {"files": 1}
+        return run
+    said, ran, log = _run_with_fakes(a, app_module, monkeypatch, run_factory=factory)
+    rows = {(h["login"], h["module"]): h for h in store.load_history() if h["login"] == "1000000001"}
+    assert rows[("1000000001", first.title)]["files"] == 3, rows
+    assert rows[("1000000001", second.title)]["files"] == 2, rows
+    assert rows[("1000000001", second.title)]["status"].startswith("Error"), rows
+    third = app_module.MODULES[2]
+    assert rows[("1000000001", third.title)]["files"] == 1, "a step that records no file rows keeps its own count"

@@ -128,3 +128,24 @@ def test_january_week_number_1_is_not_taken_for_day_1(page, mock_url):
     assert frame.locator("#frmDt").input_value() == "01/01/2026"
     assert frame.locator("#toDt").input_value() == "31/01/2026"
     assert not any("written directly" in m for m in logs), logs
+
+
+def test_december_to_january_is_one_press_not_twelve(page, mock_url):
+    """10.17: both live runs of 9 Oct 2026 moved December 2025 -> January 2026 with 12 presses (one year forward,
+    eleven months back).  The month arrow alone needs one press; the years-first route is kept for far moves."""
+    bot, frame, logs = _open(page, mock_url, "01/12/2025")       # opens on December 2025
+    warnings = bot.pick_month(frame, 2026, 1)
+    assert warnings == [], logs
+    assert frame.locator("#frmDt").input_value() == "01/01/2026"
+    assert any("Moved 1 month(s) to" in m and "(1 press(es))" in m for m in logs), logs
+
+
+def test_a_far_move_still_uses_the_year_arrows(page, mock_url):
+    bot, frame, logs = _open(page, mock_url, "05/10/2026")       # October 2026 -> March 2024 = 31 months
+    warnings = bot.pick_month(frame, 2024, 3)
+    assert warnings == [], logs
+    assert frame.locator("#frmDt").input_value() == "01/03/2024"
+    import re
+    moved = next(m for m in logs if "Moved" in m)
+    presses = int(re.search(r"\((\d+) press", moved).group(1))
+    assert presses <= 9, moved                                       # 2 year presses + 7 month presses

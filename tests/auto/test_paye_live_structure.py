@@ -113,3 +113,83 @@ def test_one_unanswered_search_is_saved_by_the_second_search(page, mock_url, pay
     files, recs, logs = _run(page, mock_url, tmp_path, generate=False, monthwise=False)
     assert len(files) == 1 and not [r for r in recs if r[1] == "failed"], logs
     assert any("Trying once more" in m for m in logs)
+
+
+# ---------- 10.17: live 9 Oct 2026 (Uganda connection) - the Search press never reached the portal, four times
+
+
+def test_search_is_the_paye_forms_own_button_not_the_outer_pages_site_search(page, mock_url, paye_portal, tmp_path):
+    """The outer ura.go.ug page has a 'Search' of its own.  The old selector list tried a bare 'Search' in every
+    frame, the outer frame first: that press sent nothing to the portal (live 9 Oct 2026, 4 min 34 s lost)."""
+    files, recs, logs = _run(page, mock_url, tmp_path, outer="paye_outer_sitesearch.html", generate=False,
+                             monthwise=False)
+    assert len(files) == 1, logs
+    assert len(paye_portal.STATE["searches"]) == 1, "the PAYE search reached the portal at the first press"
+    assert not any("pressing it again" in m for m in logs), logs
+    assert page.main_frame.locator("#site-search-note").inner_text() == "", "the site's search was never pressed"
+
+
+def test_a_press_that_never_sends_is_given_up_quickly_described_and_not_tried_a_third_time(page, mock_url, paye_portal,
+                                                                                         tmp_path, monkeypatch):
+    monkeypatch.setattr(pe, "PRESS_AGAIN_S", 1.5)
+    monkeypatch.setattr(pe, "UNSENT_GIVE_UP_S", 1.5)
+    paye_portal.reset(drop_presses=50)                 # every press on this page is swallowed
+    failed, reopened = [], []
+    page.goto(f"{mock_url}/Portal/paye_outer.html")
+    page.wait_for_timeout(800)
+    logs, recs = [], []
+
+    def reopen():
+        reopened.append(1)
+        paye_portal.STATE["drop_presses"] = 50         # the fresh page swallows its presses too
+        page.goto(f"{mock_url}/Portal/paye_outer.html", wait_until="load")
+        page.wait_for_timeout(800)
+    t0 = time.monotonic()
+    files = pe.run(page, "1000000001", "2025-07", "2026-06", tmp_path, logs.append, lambda: None,
+                   lambda *a: recs.append(a), debug_dir=tmp_path, generate=False, monthwise=False,
+                   reopen=reopen, failed=failed)
+    took = time.monotonic() - t0
+    assert files == []
+    (sec, status, detail), = [r for r in recs if r[1] == "failed"]
+    assert "never reached the portal" in detail and "pressed twice" in detail, detail
+    assert paye_portal.STATE["searches"] == [], "nothing was ever sent"
+    assert reopened == [1], "one retry from the portal home page, no more"
+    assert failed == [], "a press that never sends is not put off to the end of the client again"
+    assert any("not tried again at the end of the client" in m for m in logs), logs
+    assert took < 30, f"{took:.0f} s - the old code waited 60 s per press (2 x 68 s)"
+    # the log says what the button is, and both attempts keep their own page copies
+    assert any("button: <button" in m and "Period '2025-2026'" in m for m in logs), logs
+    assert any("pressed again by" in m for m in logs), logs
+    for name in ("paye_search_timeout_2025-2026.html", "paye_search_timeout_2025-2026_2.html",
+                 "paye_search_timeout_2025-2026.png", "paye_search_timeout_2025-2026_2.png"):
+        assert (tmp_path / name).exists(), name
+
+
+def test_a_message_box_after_the_press_ends_the_wait_at_once_with_the_message(page, mock_url, paye_portal, tmp_path,
+                                                                             monkeypatch):
+    monkeypatch.setattr(pe, "WAIT_S", 30)
+    paye_portal.reset(alert_presses=5)
+    page.goto(f"{mock_url}/Portal/paye_outer.html")
+    page.wait_for_timeout(800)
+    logs, recs = [], []
+    t0 = time.monotonic()
+    pe.run(page, "1000000001", "2025-07", "2026-06", tmp_path, logs.append, lambda: None,
+           lambda *a: recs.append(a), debug_dir=tmp_path, generate=False, monthwise=False)
+    took = time.monotonic() - t0
+    (sec, status, detail), = [r for r in recs if r[1] == "failed"]
+    assert "Please select Period" in detail, detail
+    assert took < 15, f"{took:.0f} s - a refused search is not waited for"
+    assert any("answered the Search press with a message" in m for m in logs), logs
+
+
+def test_a_page_that_comes_back_for_another_period_is_a_check_item_not_no_records(page, mock_url, paye_portal,
+                                                                                 tmp_path):
+    """Live 9 Oct 2026 (Tronics): 'No employees listed' for a year with 12.6M of PAYE paid - probably the chosen
+    year was not applied.  A page showing another period than the one asked for needs a person."""
+    paye_portal.reset(answer_period="2023-2024")       # 2023-2024 has no employees: the page shows it instead
+    files, recs, logs = _run(page, mock_url, tmp_path, generate=False, monthwise=False)
+    assert files == []
+    (sec, status, detail), = [r for r in recs if r[1] == "check"]
+    assert "2023-2024" in detail and "2025-2026" in detail, detail
+    assert not [r for r in recs if r[1] == "no records"]
+    assert any("Check this year by hand" in m for m in logs), logs

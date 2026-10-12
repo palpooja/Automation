@@ -66,13 +66,14 @@ ROUTE_CHECK_FILE = "_route_check.json"
 ROUTE_STATE = {}            # tax type -> {"hidden": bool, "verified": bool}
 TIME_LINE_TEXT = ("Tax Position as at",)   # the download time inside every Level 3 - never compared
 # 10.16 - the direct way (user, 9 Oct 2026: 'a blend of accuracy and speed ... build it, then we decide'):
-L3_ROUTE = "auto"           # 'auto'   direct request, proved per tax type on its first month against the screen way
+L3_ROUTE = "auto"           # 'auto'   direct request, proved once per client (first month fetched) against the screen way
                             # 'direct' direct request first, no proof (falls back to the screen way on a failure)
                             # 'screen' the screen way only (click / background frame + Export, as in 10.15)
 DIRECT_SWITCH_AFTER_S = 0   # > 0: give up the direct request after this many seconds and use the screen way
 DIRECT_HEARTBEAT_S = 15     # 'URA still working on it' line after this long, then every 30 s
 DIRECT_SAFETY_S = 15 * 60   # x SLOW_FACTOR: no answer at all for this long -> the screen way
-DIRECT_STATE = {}           # tax type -> {"on": bool, "verified": bool}
+DIRECT_STATE = {}           # tax type -> {"on": bool, "verified": bool}; CLIENT_PROOF_KEY -> True once proved
+CLIENT_PROOF_KEY = "__proved_for_this_client__"   # 10.17: one proof per client (DIRECT_STATE is cleared per client)
 SKIP_NIL = False        # skip Level 3 for months whose Level 2 payment is 0
 KEEP_MONTH_FILES = False  # user, 8 Oct 2026: no Excel file per month - each month is a tab in <Tax head>.xlsx
 ANNUAL_L3 = False       # Income Tax / Rental: also download Level 3 details
@@ -552,6 +553,11 @@ def read_level2_table(frame, max_attempts=3):
             except Exception:
                 continue
 
+            cols = [str(c) for c in raw.columns]
+            if "Payment" in cols and "Period" in cols and not len(raw):
+                # 10.17: a ledger with no period at all - the headings came through as column names
+                # (checked before dropna, which drops every column of a table without rows)
+                return pd.DataFrame(columns=cols)
             raw = raw.dropna(axis=1, how="all")
             header_row_idx = None
             for ridx in range(len(raw)):
@@ -803,13 +809,15 @@ def click_back(page, frame, container=None):
                         continue
                 except Exception:
                     continue
+                # 10.17: script click first (the portal rule: a mouse click can work yet be reported as timed
+                # out - 6 s lost each time); the mouse click is the fallback
                 try:
-                    btn.click(timeout=6000)
+                    btn.evaluate("el => el.click()", timeout=5000)
                     nap(page, 1200)
                     return True
                 except Exception:
                     try:
-                        btn.evaluate("el => el.click()")
+                        btn.click(timeout=6000)
                         nap(page, 1200)
                         return True
                     except Exception:
@@ -820,6 +828,71 @@ def click_back(page, frame, container=None):
         return True
     except Exception:
         return False
+
+
+BACK_TOOK_S = 6             # after Back: no page asked for in this time = the press did nothing -> press again
+LEVEL2_AFTER_BACK_S = 60    # x SLOW_FACTOR: once the Back press has asked for a page, how long Level 2 may take
+
+
+class _PageRequests:
+    """Counts the pages (frame navigations) the browser asks for after a press - the sign that the press took.
+    10.17: a Back that worked was pressed again after a fixed 10 s because Level 2 was slow to come back
+    (live 9 Oct 2026: 'still on Level 3 - pressing Back again' on the first month of every tax type, 11-29 s
+    each); a press that really did nothing used to wait the same 10 s before the next try."""
+
+    def __init__(self, page):
+        self.n, self._page = 0, page
+        try:
+            page.on("request", self._on)
+        except Exception:
+            pass
+
+    def _on(self, request):
+        try:
+            if request.resource_type == "document" or request.is_navigation_request():
+                self.n += 1
+        except Exception:
+            pass
+
+    def close(self):
+        try:
+            self._page.remove_listener("request", self._on)
+        except Exception:
+            pass
+
+
+def back_to_level2(page, l3_frame, label, container="#levelThreeTwoOfAR"):
+    """Press Back on the Level 3 page and wait for Level 2.  Returns the Level 2 frame, or None after 3 presses.
+    The wait follows what happened: Level 2 showing ends it; a press that asked the portal for nothing within
+    BACK_TOOK_S is pressed again; a press that did ask for a page is given LEVEL2_AFTER_BACK_S (heartbeat every
+    30 s) - never pressed again while the portal is still answering."""
+    for back_try in range(1, 4):
+        watch = _PageRequests(page)
+        try:
+            click_back(page, l3_frame, container=container)
+            t0 = time.monotonic()
+            limit = LEVEL2_AFTER_BACK_S * SLOW_FACTOR
+            next_note = 30
+            while True:
+                l2 = wait_for_level(page, "Level 2", timeout_seconds=0.6)
+                if l2 is not None:
+                    return l2
+                waited = time.monotonic() - t0
+                if watch.n == 0 and waited >= BACK_TOOK_S:
+                    print(f"{label}: the Back press asked the portal for nothing in {BACK_TOOK_S:.0f} s - "
+                          f"pressing Back again ({back_try}/3)")
+                    break
+                if waited >= limit:
+                    print(f"{label}: Level 2 not back {int(waited)} s after Back - pressing Back again ({back_try}/3)")
+                    break
+                if watch.n and waited >= next_note:
+                    print(f"{label}: Back pressed, waiting for the portal to rebuild Level 2 ({int(waited)} s)...")
+                    next_note += 30
+                check_stop()
+        finally:
+            watch.close()
+        l3_frame = wait_for_level(page, "Level 3", timeout_seconds=5) or l3_frame
+    return None
 
 MONTH_ROW_XPATH = "xpath=.//tr[td[string-length(normalize-space())=8 and contains(normalize-space(),'-20')]]"
 
@@ -1045,10 +1118,15 @@ def export_table_to_excel(page, scope, save_folder: Path, filename, table_locato
     return "built from the screen"
 
 
-def export_level2_to_excel(page, frame, save_folder: Path, tax_type_label):
+def export_level2_to_excel(page, frame, save_folder: Path, tax_type_label, has_months=True):
+    """has_months=False (10.17): the ledger lists no period, so the table is taken as soon as its headings show
+    instead of waiting 20 s for a month row that will never come (live 9 Oct 2026: an empty Local Excise Duty
+    ledger took 21-25 s to save)."""
     keep_previous_level2(save_folder / f"{tax_type_label}_L2.xlsx")
+    table = (ledger_table(frame) if has_months
+             else ledger_table(frame, timeout_ms=3000, require_months=False))
     how = export_table_to_excel(page, frame, save_folder, f"{tax_type_label}_L2.xlsx",
-                                table_locator=ledger_table(frame) or frame.locator("#tblData"))
+                                table_locator=table or frame.locator("#tblData"))
     if how == "built from the screen":
         NOTES.append(("Level 2", "built from the on-screen table because the portal's Export "
                                  "gave no file - compare it with the portal"))
@@ -1058,9 +1136,10 @@ def export_level2_to_excel(page, frame, save_folder: Path, tax_type_label):
 # S/N, Period, Return, Assessment, Penalty, Interest, Payment, Net Position
 PAYMENT_COLUMN_INDEX = 6
 
-def ledger_table(frame, timeout_ms=20000):
+def ledger_table(frame, timeout_ms=20000, require_months=True):
     """The Level 2 ledger table, found by its content (Period + Payment + a
-    month row) instead of by id - the id is not reliable across screens."""
+    month row) instead of by id - the id is not reliable across screens.
+    require_months=False: a table with the headings alone counts (a ledger with no period)."""
     deadline = time.time() + timeout_ms / 1000
     while time.time() < deadline:
         tables = frame.locator("table")
@@ -1072,7 +1151,7 @@ def ledger_table(frame, timeout_ms=20000):
                 txt = t.inner_text(timeout=3000)
             except Exception:
                 continue
-            if "Period" in txt and "Payment" in txt and "-20" in txt:
+            if "Period" in txt and "Payment" in txt and (not require_months or "-20" in txt):
                 return t
         nap(frame.page, 1000)
     return None
@@ -1536,8 +1615,17 @@ def _with_direct(page, frame, save_folder, tax_type_label, label, find_link, scr
     screen_way(frame) -> (frame, outcome).  Returns (frame, outcome)."""
     import tempfile
     from engines import excel_files
-    st = DIRECT_STATE.setdefault(tax_type_label, {"on": L3_ROUTE in ("auto", "direct"),
-                                                  "verified": L3_ROUTE == "direct"})
+    if tax_type_label not in DIRECT_STATE:
+        # 10.17: in Auto, a proof passed on one tax type of this client counts for the others (user's run
+        # analysis, 9 Oct 2026: the first month of every tax type by the screen way cost more than all the
+        # other months together).  A clear 'no' from URA still switches that one tax type to the screen way.
+        proved_already = L3_ROUTE == "auto" and DIRECT_STATE.get(CLIENT_PROOF_KEY, False)
+        DIRECT_STATE[tax_type_label] = {"on": L3_ROUTE in ("auto", "direct"),
+                                        "verified": L3_ROUTE == "direct" or proved_already}
+        if proved_already:
+            print(f"{tax_type_label}: the direct way was proved on this client's earlier tax type - "
+                  "its Level 3 pages are asked for directly.")
+    st = DIRECT_STATE[tax_type_label]
     if st["on"] and st["verified"]:
         l2 = wait_for_level(page, "Level 2", timeout_seconds=25) or frame
         found, period_arg = find_link(l2)
@@ -1572,8 +1660,9 @@ def _with_direct(page, frame, save_folder, tax_type_label, label, find_link, scr
                 result, detail = "not possible", why
         _remember_route_check(save_folder, f"{tax_type_label} - direct", label, result, detail)
         if result in ("identical", SAME_LINES):
+            DIRECT_STATE[CLIENT_PROOF_KEY] = True                    # proved for this client (10.17)
             print(f"{label}: direct way {result} to the screen way's file - the other {tax_type_label} "
-                  f"Level 3 pages are asked for directly.")
+                  f"Level 3 pages, and this client's other tax types, are asked for directly.")
         else:
             st["on"] = False
             print(f"{label}: direct way {result} ({detail}) - the screen way for the rest of {tax_type_label}.")
@@ -1623,7 +1712,7 @@ def _remember_route_check(save_folder, tax_type_label, month_label, result, deta
 
 
 def level3_month(page, frame, save_folder: Path, tax_type_label, month_label, payment_value=None):
-    """10.16: the direct way first (proved per tax type on its first month), else the screen way below."""
+    """10.16: the direct way first (proved once per client on the first month fetched), else the screen way below."""
     def find_link(l2):
         marked = mark_payment_link(l2, month_label, payment_value)
         if not marked.get("row"):
@@ -1752,14 +1841,7 @@ def download_level3_for_month(page, frame, save_folder: Path, tax_type_label, mo
     dismiss_cookie_banner(page)
     dismiss_pre_login_popup(page)
 
-    new_frame = None
-    for back_try in range(1, 4):
-        click_back(page, l3_frame, container="#levelThreeTwoOfAR")
-        new_frame = wait_for_level(page, "Level 2", timeout_seconds=10)
-        if new_frame is not None:
-            break
-        print(f"{month_label}: still on Level 3 - pressing Back again ({back_try}/3)")
-        l3_frame = wait_for_level(page, "Level 3", timeout_seconds=5) or l3_frame
+    new_frame = back_to_level2(page, l3_frame, month_label)
     if new_frame is None:
         raise RuntimeError(f"Did not return to Level 2 after {month_label} (showing: {visible_level(page)[0]})")
     for _ in range(10):                       # the ledger redraws slowly
@@ -1889,7 +1971,7 @@ def year_in_period(label, period_from, period_to) -> bool:
 
 
 def level3_year(page, frame, month_dir: Path, tax_type_label, period):
-    """10.16: the direct way first (proved per tax type on its first year), else download_level3_year."""
+    """10.16: the direct way first (proved once per client, see _with_direct), else download_level3_year."""
     def find_link(l2):
         item = next((x for x in annual_links(l2) if x["period"] == period), None)
         if item is None:
@@ -1973,14 +2055,7 @@ def download_level3_year(page, frame, month_dir: Path, tax_type_label, period):
     how, t_saved, t_checked = _save_level3(page, l3_frame.locator("#levelThreeTwoOfAR"), month_dir,
                                            tax_type_label, period)
     nap(page, 1500)
-    new_frame = None
-    for back_try in range(1, 4):
-        current = wait_for_level(page, "Level 3", timeout_seconds=5) or l3_frame
-        click_back(page, current, container="#levelThreeTwoOfAR")
-        new_frame = wait_for_level(page, "Level 2", timeout_seconds=15)
-        if new_frame is not None:
-            break
-        print(f"{period}: still on Level 3 - pressing Back again ({back_try}/3)")
+    new_frame = back_to_level2(page, wait_for_level(page, "Level 3", timeout_seconds=5) or l3_frame, period)
     if new_frame is None:
         raise RuntimeError(f"Did not return to Level 2 after {period} (showing: {visible_level(page)[0]})")
     TIMINGS.append((tax_type_label, period, t_open - t_click, t_saved - t_open, time.monotonic() - t_checked,
@@ -2122,7 +2197,7 @@ def process_tax_type(page, tax_type_label, period_from, period_to, save_folder: 
     if level2_usable(l2_file):
         record(section, "Level 2", "already downloaded", file=l2_file)
     else:
-        how = export_level2_to_excel(page, frame, save_folder, tax_type_label)
+        how = export_level2_to_excel(page, frame, save_folder, tax_type_label, has_months=bool(listed))
         record(section, "Level 2", "saved", detail=how, file=l2_file)
         drain_notes(section)
 

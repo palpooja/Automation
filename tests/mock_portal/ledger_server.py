@@ -42,7 +42,10 @@ FUNCTION = '''function openLevelThreeTwo(prd){
 def reset(**kw):
     STATE.update({"csrf": "session", "level2_delay": 1.5, "level3_delay": 0.4, "level2_loads": 0,
                   "level3_requests": [], "valid": set(), "kind": "monthly", "fail_years": set(),
-                  "other_requests": [], "level3_modes": [], "refuse_fetch": False, "flip_order": False})
+                  "other_requests": [], "level3_modes": [], "refuse_fetch": False, "flip_order": False,
+                  "no_months": False, "dead_backs": 0})
+    # 10.17: no_months - a ledger that lists no period at all (an empty Local Excise Duty ledger);
+    #        dead_backs - the Level 3 page's Back button ignores this many presses before it works
     STATE.update(kw)
 
 
@@ -165,13 +168,14 @@ def level2_page():
     hidden = "".join(f'<input type="hidden" name="{f}" value="x">' for f in FIELDS)
     rows = "".join(f'<tr><td>{i}</td><td>{m}</td><td>100</td><td>0</td><td>0</td><td>0</td>'
                    f'<td><a onclick="openLevelThreeTwo(\'{m}\')" style="cursor:pointer;">{amt}</a></td><td>0</td></tr>'
-                   for i, (m, amt) in enumerate(MONTHS, 1))
+                   for i, (m, amt) in enumerate([] if STATE.get("no_months") else MONTHS, 1))
     return (f'<html><body><form name="levelTwoOfAR" id="levelTwoOfAR" method="post" action="{BASE}loadLevelTwo">'
             f'<input type="hidden" name="_csrf" value="{tok}">{hidden}'
             '<h4>Period-wise Taxpayer Ledger -&gt; Level - 2 (Period Wise Position)</h4>'
             '<table id="tblData"><tr><th>S/N</th><th>Period</th><th>Return</th><th>Assessment</th><th>Penalty</th>'
-            f'<th>Interest</th><th>Payment</th><th>Net Position</th></tr>{rows}</table></form>'
-            f'<script>\n{FUNCTION}\n</script></body></html>')
+            f'<th>Interest</th><th>Payment</th><th>Net Position</th></tr>{rows}</table>'
+            '<button onclick="exportTableToExcel(\'tblData\', \'Level-2\')">Export To Excel</button></form>'
+            f'<script>\n{FUNCTION}\n{EXPORT_JS.split("function goBack")[0]}\n</script></body></html>')
 
 
 def _split_lines():
@@ -198,6 +202,7 @@ def level3_page(period, body):
     time.sleep(STATE["level3_delay"])
     stamp = f"06/10/2026 04:{next(_counter) % 60:02d}:{int(time.time()) % 60:02d}"
     amt = dict(MONTHS).get(period, "0")
+    dead, STATE["dead_backs"] = STATE.get("dead_backs", 0), 0
     table = (f'<table class="FORM_TAB_BORDER"><tr><td colspan="6">Tax Position as at {stamp}</td></tr>'
              f'<tr><td colspan="6">Period: {period}</td></tr>'
              '<tr><th>Sr No.</th><th>Payment Basis</th><th>Effective Date</th><th>Payment Registration Number</th>'
@@ -208,9 +213,9 @@ def level3_page(period, body):
                  f'action="{BASE}loadLevelTwo"><input type="hidden" name="_csrf" value="{tok}">'
                  '<h4>Period-wise Taxpayer Ledger -&gt; Level - 3-2 (Details Of Payment)</h4>'
                  f'{table}<input type="button" id="backbtn" value="Back" '
-                 'onclick="document.levelThreeTwoOfAR.submit()">'
+                 'onclick="if (deadBack > 0) { deadBack--; } else document.levelThreeTwoOfAR.submit()">'
                  '<input type="button" value="Export To Excel" onclick="exportFile()"></form>'
-                 '<script>function exportFile(){var t=document.querySelector("table.FORM_TAB_BORDER");'
+                 f'<script>var deadBack = {dead};function exportFile(){{var t=document.querySelector("table.FORM_TAB_BORDER");'
                  'var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["<html><body><table>"+'
                  't.innerHTML+"</table></body></html>"],{type:"application/vnd.ms-excel"}));'
                  'a.download="Level3.xls";document.body.appendChild(a);a.click();}</script></body></html>')

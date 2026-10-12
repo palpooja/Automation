@@ -129,6 +129,9 @@ def ledger_portal():
     _s.path.insert(0, str(MOCK_DIR))
     import ledger_server
     ledger_server.reset()
+    from engines import ledger_engine as eng
+    eng.DIRECT_STATE.clear()            # 10.17: the route proof is per client - never carried between tests
+    eng.ROUTE_STATE.clear()
     return ledger_server
 
 
