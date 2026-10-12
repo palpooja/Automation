@@ -629,11 +629,14 @@ def _capture_mhtml(target_page, dest):
 # ---------------------------------------------------------------- main
 def run_on_page(page, login_id, date_from, date_to, wanted_categories, log, check,
                 base_folder, patient=False, result=None, skip_existing=True, first_try_s=None,
-                person=None):
+                person=None, reopen=None):
     """first_try_s: a return not ready within this many seconds is SET ASIDE (result['deferred']) instead of
     holding up the run; the caller tries it again later without first_try_s.  person: on that later try, an
     object with attention(message) / poll_answer() / hide_question() - 'Attention needed' and Skip / Keep
-    waiting after SKIP_OFFER_AFTER_SECONDS (the wait goes on while the question shows)."""
+    waiting after SKIP_OFFER_AFTER_SECONDS (the wait goes on while the question shows).
+    reopen (10.18): brings the portal home page back (core.session.go_home); after a return type whose Search gave
+    nothing, or a page without date boxes, the return history is opened again before the next type - live
+    12 Oct 2026: one VAT search with no answer left the page unusable and every later type was skipped."""
     """Download every return in the period on an already-logged-in page.
     `check` raises when Stop is pressed.  Fills `result` like run_bot did:
     summary [(category, files)], ok, folder."""
@@ -656,27 +659,65 @@ def run_on_page(page, login_id, date_from, date_to, wanted_categories, log, chec
     install_print_catcher(page.context)
 
     # ---- open 'View return history' ----
-    link_sel = "a:has-text('return history')"
-    fr, link = None, None
-    for _ in range(40):
-        check()
-        _skip_popups(page, log)
-        fr, link = _find(page, link_sel, 1, check, visible=False)
-        if link is not None:
-            break
-    if link is None:
-        raise RuntimeError("Could not find 'View return history' in the portal menu.")
-    log("Opening 'View return history'...")
-    href = (link.get_attribute("href") or "")
-    _js_click(link)
-    fr, btn = _find(page, "#search", 25, check)
-    if btn is None and href and "javascript" not in href.lower():
-        log("   Click did not open the page - trying its direct address...")
-        page.goto(href)
-        fr, btn = _find(page, "#search", 20, check)
-    if btn is None:
-        raise RuntimeError("The return-history search page did not load.")
-    log("Return history page is open.")
+    def open_history():
+        link_sel = "a:has-text('return history')"
+        fr, link = None, None
+        for _ in range(40):
+            check()
+            _skip_popups(page, log)
+            fr, link = _find(page, link_sel, 1, check, visible=False)
+            if link is not None:
+                break
+        if link is None:
+            raise RuntimeError("Could not find 'View return history' in the portal menu.")
+        log("Opening 'View return history'...")
+        href = (link.get_attribute("href") or "")
+        _js_click(link)
+        fr, btn = _find(page, "#search", 25, check)
+        if btn is None and href and "javascript" not in href.lower():
+            log("   Click did not open the page - trying its direct address...")
+            page.goto(href)
+            fr, btn = _find(page, "#search", 20, check)
+        if btn is None:
+            raise RuntimeError("The return-history search page did not load.")
+        log("Return history page is open.")
+        return fr
+
+    def failure_copy(frame, name, why):
+        """A screenshot and a page copy in the client's Returns folder, so a search that gave nothing can be
+        looked at later (10.18).  Returns the screenshot path or ''."""
+        stem = os.path.join(tin_folder, f"Search failed {safe_name(name)} {datetime.datetime.now():%H%M%S}")
+        shot = ""
+        try:
+            page.screenshot(path=stem + ".png", full_page=True, timeout=10000)
+            shot = stem + ".png"
+        except Exception:
+            pass
+        try:
+            if frame is not None:
+                with open(stem + ".html", "w", encoding="utf-8") as fh:
+                    fh.write(frame.content())
+        except Exception:
+            pass
+        if shot:
+            log(f"   Page copy for '{why}': {os.path.basename(shot)}")
+        return shot
+
+    def recover_history(why, name, frame):
+        """10.18: after a failure that leaves the page unusable, back to the portal home page (reopen) and into
+        'View return history' once more.  True when the page is open again."""
+        failure_copy(frame, name, why)
+        log(f"   {why} - opening the return history page again" + (" from the portal home page." if reopen else "."))
+        try:
+            if reopen is not None:
+                reopen()
+            open_history()
+            return True
+        except Exception as e:
+            log(f"   The return history page did not open again ({type(e).__name__}: {str(e)[:120]}).")
+            return False
+
+    fr = open_history()
 
     dd = fr.locator("#rtnType").first
     options = dd.evaluate("el => Array.from(el.options).map(o => [o.value, o.text.trim()])")
@@ -836,7 +877,7 @@ def run_on_page(page, login_id, date_from, date_to, wanted_categories, log, chec
     stopped, why = False, None
     try:
         # ---- categories ----
-        for code, name in categories:
+        for cat_no, (code, name) in enumerate(categories, 1):
             check()
             cat_name = name
             folder = os.path.join(tin_folder, safe_name(name))
@@ -845,9 +886,14 @@ def run_on_page(page, login_id, date_from, date_to, wanted_categories, log, chec
             log(f"\n=== {name} ===" + ("   (saved as web page .mhtml, no PDF)" if save_html else ""))
             fr, _ = _find(page, "#rtnType", 15, check)
             if fr is None or not fill_dates(page, fr, date_from, date_to, log):
-                log("   Skipping this category (no date boxes).")
-                items.append({"item": name, "status": "failed", "detail": "no date boxes on the page"})
-                continue
+                # 10.18: the page is not usable (live 12 Oct 2026: every type after a failed search) - once more
+                # from the portal home page before giving this type up
+                if recover_history("No date boxes on the page", name, fr):
+                    fr, _ = _find(page, "#rtnType", 15, check)
+                if fr is None or not fill_dates(page, fr, date_from, date_to, log):
+                    log("   Skipping this category (no date boxes).")
+                    items.append({"item": name, "status": "failed", "detail": "no date boxes on the page"})
+                    continue
             fr.locator("#rtnType").first.select_option(code)
             if code in BRANCH_CODES:
                 select_both_branches(fr, log)
@@ -861,6 +907,10 @@ def run_on_page(page, login_id, date_from, date_to, wanted_categories, log, chec
                 log("   No new results appeared after Search - skipping this category.")
                 items.append({"item": name, "status": "failed", "detail": "no results area appeared"})
                 summary.append((name, 0))
+                if cat_no < len(categories):                # the next type starts on a fresh page
+                    recover_history("No results after Search", name, fr)
+                else:
+                    failure_copy(fr, name, "No results after Search")
                 continue
             total_records = None
             m = re.search(r"Total\s*Records?\s*:\s*(\d+)", fresh_text(fr))

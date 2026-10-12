@@ -41,6 +41,20 @@ class _QuietHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         import sys as _s
         _s.path.insert(0, str(MOCK_DIR))
+        # 10.18: the WHT certificate page's live address, answered after ?ms= (a slow link); the page itself
+        # is the test copy Portal/wht_live.html.  Before the PAYE handler, which owns the same controller path.
+        if "loadWthPage" in self.path:
+            import time
+            from urllib.parse import parse_qs, urlparse
+            ms = int(parse_qs(urlparse(self.path).query).get("ms", ["0"])[0])
+            time.sleep(ms / 1000)
+            body = (MOCK_DIR / "Portal" / "wht_live.html").read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         import ledger_server
         if ledger_server.handle(self, "GET"):          # the Ledger form screens (option C tests)
             return
@@ -132,6 +146,8 @@ def ledger_portal():
     from engines import ledger_engine as eng
     eng.DIRECT_STATE.clear()            # 10.17: the route proof is per client - never carried between tests
     eng.ROUTE_STATE.clear()
+    eng.RESULTS.clear()                 # 10.18: nor the items of an earlier test's tax type
+    eng.NOTES.clear()
     return ledger_server
 
 

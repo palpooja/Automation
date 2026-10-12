@@ -1,0 +1,5 @@
+<html><body><h2>ura.go.ug (outer page) - the portal menu, and a certificate page that is slow to arrive</h2>
+<!-- live 12 Oct 2026: the frame was at loadWthPage but the form took longer than the 12 s per click -->
+<div id="mailbox"><ul><li><a href="#" onclick="document.getElementById('tcs').src='/Portal/genTaxCreditCertController/loadWthPage?req=loadTCCWTH&ms=' + (sessionStorage.getItem('whtMs')||'15000'); window.clicks=(window.clicks||0)+1; return false;">Generate Tax Credit Certificate for Withholding</a></li></ul></div>
+<iframe name="tcs-resource" id="tcs" src="about:blank" style="width:1200px;height:700px"></iframe>
+</body></html>

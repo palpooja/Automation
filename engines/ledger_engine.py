@@ -2226,8 +2226,21 @@ def process_tax_type(page, tax_type_label, period_from, period_to, save_folder: 
             print(f"{period_text}: payment is nil - skipped (option ticked).")
             record(section, period_text, "nil payment - skipped", detail=f"Payment {pay}")
             continue          # not written to progress, so an unticked run still fetches it
-        current_frame, outcome = level3_month(
-            page, current_frame, month_dir, tax_type_label, period_text, payment_value=pay)
+        try:
+            current_frame, outcome = level3_month(
+                page, current_frame, month_dir, tax_type_label, period_text, payment_value=pay)
+        except Exception as e:
+            # 10.18 (live 12 Oct 2026: PAYE JUL-2026's export failed and the WHOLE tax type started again from
+            # Level 1, 4.5 min): one month's failure is that month's - recorded, Level 2 reloaded, the next month
+            # goes on.  The browser closed by hand still ends the run.
+            from core.runner import browser_gone
+            if browser_gone(page, e):
+                raise
+            msg = (str(e).splitlines() or [""])[0][:150]
+            print(f"{period_text}: failed ({msg}) - recorded for this month; the next month goes on.")
+            safe_screenshot(page, f"error_{tax_type_label.replace(' ', '_')}_{period_text}.png")
+            outcome = "failed"
+            current_frame = refresh_level2(page, current_frame, tax_type_label)
         mark_progress(save_folder, tax_type_label, period_text,
                       {"saved": "saved", "no link": "no payment link"}.get(outcome, "failed"))
         record(section, period_text, {"saved": "saved", "no link": "no payment link"}.get(outcome, "failed"),

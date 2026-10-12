@@ -131,6 +131,14 @@ module must not rely on where the previous one left the portal. WHT generate_for
   live screens: tests/mock_portal/paye_server.py. Ask for a page capture of #divPostContent if its columns ever look wrong
   (the first one is saved as logs/paye_monthwise_example.html on every run).
 
+## Version 10.18 notes (12 Oct 2026 - live log 12:56, 10.16 build from abroad)
+- Returns: run_on_page(reopen=) + nested open_history / recover_history; a failed search or missing date boxes
+  -> page copy in the client's Returns folder, go_home, 'View return history' again (once per type).
+- WHT: open_wht_page waits for a certificate page the browser has asked for (WhtBot._on_request notes requests to
+  WHT_PAGE_URL_MARK; _wait_for_loading_form, PAGE_OPEN_S) instead of re-clicking the menu link.
+- Ledgers: process_tax_type contains a month's exception (recorded 'failed', screenshot, refresh_level2, next month).
+- Tests: 233.
+
 ## Version 10.17 notes (12 Oct 2026 - run analysis Tronics vs Telecom)
 - PAYE Search: ONLY the form's own button, in the form's frame (paye_engine.SEL['search'] - never a bare
   "button:has-text('Search')": the outer ura.go.ug page has a site search that sends nothing). A press that sends

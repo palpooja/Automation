@@ -1,5 +1,47 @@
 # Changelog
 
+## 10.18 - 12 October 2026 (live log of 12 Oct 2026 12:56, Tronics from abroad on the 10.16 build)
+
+### 1. Returns: one search that answers nothing no longer costs every later return type
+- Was: the Monthly VAT search gave no results for 7.5 min; the page was left without its date boxes and PAYE and
+  Provisional were skipped with 'no date boxes' - the run saved 0 returns.
+- Now: after 'No new results appeared' or 'no date boxes', a screenshot and page copy are saved in the client's
+  Returns folder (`Search failed <type> <time>.png/.html`), the portal home page is opened again (the same route the
+  suite uses between steps) and 'View return history' re-opened; the next type starts on a fresh page, and a type
+  without date boxes is tried once more before it is given up.  returns_pw.run_on_page(reopen=...).
+
+### 2. Certificates: a certificate page that is slow to arrive is waited for, not clicked again
+- Was: the WHT frame was at the certificate page's address, but its form took longer than the 12 s allowed per
+  click; every re-click restarted the load; after 40 s the whole Certificates step failed in one second ('Could
+  not open the WHT search form') and nothing was logged out.
+- Now: once the browser has asked for the certificate page (seen through its requests - the frame still shows its
+  old address while the answer is on its way), the form is waited for up to 90 s (or the Internet speed setting's
+  search wait, whichever is longer) with a note every 30 s, and the link is never pressed again meanwhile.
+
+### 3. Ledgers: a month that fails is that month's failure, not the tax type's
+- Was: PAYE JUL-2026's Export gave no file and the on-screen table was gone; the exception restarted the WHOLE tax
+  type from Level 1 (4.5 min: Level 1 waited for twice, Tax Statement re-opened, Level 2 re-read).
+- Now: the month is recorded as failed (screenshot `error_<tax>_<month>.png`), Level 2 is reloaded and the next
+  month goes on; the failed month is fetched by the end-of-client second try or the next run, as before.
+
+### Tests
+- 233 tests, all passing.  New: tests/auto/test_round_two_live_12_oct.py (4); test portal: Portal/history.html
+  flags 'deadSearch' / 'dropBoxesAfter', Portal/wht_menu_slow.html and the certificate page's live address
+  answered after a delay (conftest), ledger_portal fixture also resets RESULTS and NOTES.
+
+### About the six suggestions received with the log (see FIX_PLAN_2026-10-12.md for the detail)
+- Done already: the Level 3 direct request (10.16), proved once per client (10.17); the first Back press and the
+  empty Local Excise Duty ledger (10.17); the PAYE search (10.17 - the cause found in the code was the outer page's
+  site search being pressed, not a missing onchange; the period is set with select_option, which fires change).
+- Not done, with reasons: blocking all images/CSS/fonts from ura.go.ug after login would break the date selector
+  (its arrows are images, the calendar is laid out by CSS and read by position) and the visibility checks the
+  robustness rules rely on; direct requests for Level 2, return PDFs and certificates, and 2-3 requests at a time,
+  need live captures of those requests first (run one action with URA_DEBUG=1 and send the log) - the portal's
+  session and token rules for those pages are not known offline.
+- Skipping return types / tax heads from the registration details: the portal lists the same 17 return types and
+  all tax heads for every taxpayer; the registration page's layout is not captured yet - untick them on the
+  Returns page for now (from Uganda each empty check costs about 2 s).
+
 ## 10.17 - 12 October 2026 (user: "fix the bugs and make the bot faster and more accurate" - run analysis of 9 Oct 2026, Tronics vs Telecom)
 
 ### 1. PAYE certificates: the Search that never reached the portal (the main failure of both runs)

@@ -94,6 +94,7 @@ class ReturnsModule(Module):
 
     def run(self, ctx, client, options, page=None):
         from engines import returns_pw
+        from core.session import go_home as _go_home
         if page is None:
             raise RuntimeError("Returns needs a logged-in session (core.session.open_session).")
         result = {}
@@ -108,7 +109,8 @@ class ReturnsModule(Module):
                                    str(ctx.output_root / "Returns"), patient=options["patient"],
                                    result=result, skip_existing=options.get("skip_existing", True),
                                    first_try_s=None if ctx.final_try else eng.FIRST_TRY_SECONDS,
-                                   person=ctx if ctx.final_try else None)
+                                   person=ctx if ctx.final_try else None,
+                                   reopen=lambda: _go_home(ctx, page, client, before="the return history page"))
         finally:                    # report work done so far, also after Stop
             for it in result.get("items", []):
                 ctx.record(it.get("item", ""), it.get("status", ""), it.get("detail", ""),
@@ -148,6 +150,7 @@ class ReturnsModule(Module):
         needed' and may press Skip (the wait goes on while the question shows).  10.15: also every return
         type with a failure - returns already on disk are skipped, so only the missing ones are fetched."""
         from engines import returns_pw
+        from core.session import go_home as _go_home
         labels = {a["label"] for a in aside}
         types = sorted({a["type"] for a in aside} | set(failed_types))
         result = {}
@@ -159,7 +162,8 @@ class ReturnsModule(Module):
             returns_pw.run_on_page(page, client["login"], options["date_from"], options["date_to"],
                                    types, log, ctx.check,
                                    str(ctx.output_root / "Returns"), patient=options["patient"],
-                                   result=result, skip_existing=True, first_try_s=None, person=ctx)
+                                   result=result, skip_existing=True, first_try_s=None, person=ctx,
+                                   reopen=lambda: _go_home(ctx, page, client, before="the return history page"))
         finally:
             got = set()
             for it in result.get("items", []):

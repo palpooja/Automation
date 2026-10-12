@@ -40,5 +40,13 @@ function render(){
   document.getElementById('out').innerHTML=h;}
 // a test can make page turns slow, like the live portal (5 Oct 2026: 6-20 s): sessionStorage 'nextDelayMs'
 function nextPage(){var d=+(sessionStorage.getItem('nextDelayMs')||0); setTimeout(function(){page++;render();},d);}
-document.getElementById('search').onclick=function(){page=1;window.lastDates=[fromDate.value,toDate.value];setTimeout(render,300)};
+// 10.18 test flags (live 12 Oct 2026): sessionStorage 'deadSearch' = a type whose Search answers nothing and
+// leaves the page without its date boxes (once); 'dropBoxesAfter' = a type whose results arrive, then the date
+// boxes vanish (once) - the next type finds no date boxes
+document.getElementById('search').onclick=function(){page=1;window.lastDates=[fromDate.value,toDate.value];
+  var t=document.getElementById('rtnType').value;
+  if(sessionStorage.getItem('deadSearch')===t){sessionStorage.removeItem('deadSearch');
+    document.getElementById('fromDate').remove();document.getElementById('toDate').remove();return;}
+  setTimeout(function(){render(); if(sessionStorage.getItem('dropBoxesAfter')===t){sessionStorage.removeItem('dropBoxesAfter');
+    document.getElementById('fromDate').remove();document.getElementById('toDate').remove();}},300)};
 </script></body></html>

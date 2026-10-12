@@ -242,3 +242,11 @@ The Stop button is still the better way - it lets the current step finish and lo
   an empty ledger (for example Local Excise Duty with no periods) is saved in seconds.
 - The run summary's Overview counts the same files as its Files sheet, also for a step that ended with an error.
 - Logout is pressed from the portal home page when the last step ended on another screen.
+
+## 21. Slow connections (version 10.18)
+- Returns: if a search gives nothing, or the page loses its date boxes, the program keeps a screenshot and a page
+  copy in the client's Returns folder ("Search failed ..."), goes back to the portal home page and opens
+  "View return history" again, so the other return types are still fetched.
+- Certificates: a certificate page that takes long to arrive is waited for (up to 90 s, or the search wait of your
+  Internet speed setting) instead of being clicked again.
+- Ledgers: a month whose Level 3 fails is recorded for that month only; the other months go on.

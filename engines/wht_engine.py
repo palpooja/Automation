@@ -181,6 +181,8 @@ RELOAD_GRACE_S = 6                 # after the portal reloads: wait this long fo
 RESULT_MATCH = "TIN"            # pandas.read_html(match=...) (assumed: 'Agent TIN' column)
 POLL_MS = 150
 RESULT_WAIT_MS = 60000          # how long a search may take before the month is FAILED
+PAGE_OPEN_S = 90                # 10.18: how long the certificate page may take to show its form once it is loading
+WHT_PAGE_URL_MARK = "loadwthpage"   # the certificate page's address (live: .../genTaxCreditCertController/loadWthPage)
 ONLINE_WAIT = None              # suite: waits while the internet is down
 
 NO_RECORD_RE = r"no\s+(record|data|result|detail)s?\s*(found|available)?\b"
@@ -308,6 +310,20 @@ class WhtBot:
         self._cdp = None
         self.click_log = []
         self.expected_from = None          # the From date pick_month set; search() checks it is still there
+        self._wht_page_asked_at = None     # 10.18: when the browser last asked for the certificate page
+        try:
+            page.on("request", self._on_request)
+        except Exception:
+            pass
+
+    def _on_request(self, request):
+        """Notes a request for the certificate page: while it is on its way the frame still shows its OLD
+        address (Playwright reports the new one only when the answer starts arriving)."""
+        try:
+            if WHT_PAGE_URL_MARK in request.url.lower() and request.resource_type == "document":
+                self._wht_page_asked_at = time.monotonic()
+        except Exception:
+            pass
 
     # ------------------------------------------------------------ frames / find
     def frames(self):
@@ -517,6 +533,13 @@ class WhtBot:
         while time.monotonic() < end:
             self.check()
             self._quick_dismiss()
+            if self._wht_page_loading():
+                # 10.18 (live 12 Oct 2026, slow link): the certificate page WAS opening (frame at loadWthPage) but
+                # its form took longer than 12 s; every re-click restarted the load and after 40 s the whole
+                # Certificates step failed.  A page on its way is waited for, never clicked again.
+                if self._wait_for_loading_form(quiet):
+                    return
+                break
             fr, link = self._menu_link()
             if link is None:
                 self.page.wait_for_timeout(POLL_MS)
@@ -535,6 +558,10 @@ class WhtBot:
                 if not quiet:
                     self.log("Search form is open.")
                 return
+            if self._wht_page_loading():              # 10.18: the page is on its way - wait, do not click again
+                if self._wait_for_loading_form(quiet):
+                    return
+                continue
             if href and not tried_href:
                 tried_href = True
                 try:
@@ -551,6 +578,8 @@ class WhtBot:
                     raise
                 except Exception:
                     pass
+        if self._wht_page_loading() and self._wait_for_loading_form(quiet):
+            return
         # slow route: hover the parent menu, then click
         self.log("  quick route did not open the page - trying the slow route...")
         fr, link = self._menu_link()
@@ -566,6 +595,40 @@ class WhtBot:
                 self.log("Search form is open.")
                 return
         raise RuntimeError("Could not open the WHT search form. Frames: " + self.describe_frames())
+
+    def _wht_page_loading(self):
+        """True when a frame is at the certificate page's address, or the browser asked for that page within the
+        last PAGE_OPEN_S seconds, and the form is not there yet."""
+        asked = self._wht_page_asked_at
+        if asked is not None and time.monotonic() - asked < max(PAGE_OPEN_S, RESULT_WAIT_MS / 1000.0):
+            return True
+        for fr in self.frames():
+            try:
+                if WHT_PAGE_URL_MARK in (fr.url or "").lower():
+                    return True
+            except Exception:
+                continue
+        return False
+
+    def _wait_for_loading_form(self, quiet=False):
+        """The certificate page is loading: wait for its form up to PAGE_OPEN_S (x the Internet speed setting
+        through RESULT_WAIT_MS), with a note every 30 s.  True when the form showed."""
+        limit = max(PAGE_OPEN_S, RESULT_WAIT_MS / 1000.0)
+        self.log(f"  The certificate page is loading - waiting for its form (up to {int(limit)} s)...")
+        t0, next_note = time.monotonic(), 30
+        while time.monotonic() - t0 < limit:
+            if self.wait_find(SEL["from_date"], timeout=1000) is not None:
+                if not quiet:
+                    self.log("Search form is open.")
+                return True
+            waited = time.monotonic() - t0
+            if waited >= next_note:
+                self.log(f"  still waiting for the certificate page ({int(waited)} s)...")
+                next_note += 30
+            if not self._wht_page_loading():          # the frame went somewhere else: back to the menu
+                return False
+        self._wht_page_asked_at = None                # the page never showed its form: the menu again
+        return False
 
     def form_frame(self):
         for fr in self.frames():
