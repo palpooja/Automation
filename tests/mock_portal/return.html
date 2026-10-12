@@ -1,0 +1,9 @@
+<html><body><h1 id="t">Return</h1><div id="body" style="overflow-x: scroll;width:300px"><table class="tab3"><tr><td>Wide content column A</td><td>Wide content column B</td><td>Wide content column C</td></tr></table></div>
+<script>
+var id=new URLSearchParams(location.search).get('id'); document.getElementById('t').textContent='Return '+id;
+if(id.indexOf('BAD')<0){ setTimeout(function(){
+  document.body.insertAdjacentHTML('beforeend','<input type="button" id="printid" value="Print">');
+  if(id.indexOf('EXC')<0) document.body.insertAdjacentHTML('beforeend','<input type="button" id="printWthSchid" value="Print with Schedules">');
+  var s=document.getElementById('printWthSchid'); if(s) s.onclick=function(){document.body.insertAdjacentHTML('beforeend','<h2 id="sched">SCHEDULES FOR '+id+'</h2>'+'<p>line</p>'.repeat(200)); window.print();};
+},700);}
+</script></body></html>

@@ -1,0 +1,4 @@
+# Only for BUILD_SUITE.bat (making URA_Suite.exe). Version current on 2026-10-03; the
+# .exe build itself has NOT been tested by the automated tests (it needs Windows).
+-r requirements.txt
+pyinstaller==6.22.3

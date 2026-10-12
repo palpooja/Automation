@@ -1,0 +1,9 @@
+<html><body>
+<button id="okexp" onclick="exp()">Export To Excel</button>
+<div id="dead"><button onclick="/* portal export that never produces a file */ 0">Export To Excel</button></div>
+<table id="tblData"><tr><th>S/N</th><th>Period</th><th>Return</th><th>Payment</th></tr>
+<tr><td>1</td><td>JUN-2026</td><td>100</td><td>46,475</td></tr><tr><td>2</td><td>MAY-2026</td><td>90</td><td>215,136</td></tr></table>
+<div id="certs"><input type=checkbox data-bot-cert="0" onclick="window.c0=(window.c0||0)+1"><input type=checkbox data-bot-cert="1" checked><input type=checkbox data-bot-cert="2"></div>
+<a id="far" href="#" style="position:absolute;left:-5000px" onclick="window.farClicks=(window.farClicks||0)+1;this.remove();return false;">payment</a>
+<script>function exp(){var a=document.createElement('a');a.href='data:application/vnd.ms-excel,'+encodeURIComponent(document.getElementById('tblData').outerHTML);a.download='Level-2.xls';document.body.appendChild(a);a.click();}</script>
+</body></html>

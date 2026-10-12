@@ -1,0 +1,10 @@
+<html><body><form id="loginForm" onsubmit="return false">
+Login Id <input id="userName"> Password <input type="password" id="pw"> Code <input id="ans">
+<button type="button" id="go">Log In</button></form><div id="msg"></div>
+<script>
+document.getElementById('go').onclick=function(){
+  var n=+(sessionStorage.getItem('tries')||0)+1; sessionStorage.setItem('tries',n);
+  window.top.__loginAttempts=n; window.top.__loginFilled=[userName.value,pw.value];
+  if(n<2){ document.getElementById('msg').textContent='Invalid security code'; pw.value=''; userName.value=''; return; }
+  window.top.location='home.html';};
+</script></body></html>

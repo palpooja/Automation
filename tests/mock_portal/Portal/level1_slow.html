@@ -1,0 +1,12 @@
+<html><body>
+<div id="firstPageOfAR"><h3>Period-wise Taxpayer Ledger -> Level - 1 (Tax Position)</h3><div id="l1"></div></div>
+<div id="levelTwoOfAR" style="display:none"><h3>Level - 2 (Period Wise Position)</h3><table id="tblData"><tr><th>S/N</th><th>Period</th></tr><tr><td>1</td><td>AUG-2026</td></tr></table></div>
+<script>
+setTimeout(function(){   // the table of tax types arrives late, like the live portal after Back
+  var names=['Value Added Tax','VAT-WHT','VAT-Imported Services','Income Tax','Rental','IT-WHT','PAYE','Gaming Tax','Local Excise Duty','Stamp Duty'];
+  var h='<table id="tblData"><tr><th>Tax Type</th><th>Outstanding Tax</th></tr>';
+  names.forEach(function(n){h+='<tr><td><a href="#" onclick="go(\''+n+'\');return false;">'+n+'</a></td><td>0</td></tr>';});
+  document.getElementById('l1').innerHTML=h+'</table>';
+}, 25000);
+function go(n){document.getElementById('firstPageOfAR').style.display='none';document.getElementById('levelTwoOfAR').style.display='block';window.opened=n;}
+</script></body></html>

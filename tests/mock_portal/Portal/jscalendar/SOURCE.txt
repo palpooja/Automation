@@ -1,0 +1,13 @@
+The DHTML Calendar 1.0 by Mihai Bazon / Dynarch.com - the same date-picker component the
+URA portal uses on 'Generate Withholding Tax Credit Certificate' (identified from the live
+screenshots of 5 Oct 2026: '?', 'x', '<<', '<', 'Today', '>', '>>' buttons, 'wk' column, 'Time:' row).
+
+Used ONLY by the test page wht_dynarch.html, so the tests meet the real component's behaviour:
+its buttons and dates react to a mouse button pressed and released on them (mousedown + mouseup),
+not to a plain 'click' signal.
+
+Licence: GNU Lesser General Public License (LGPL) - see the header of calendar.js.
+Downloaded 6 Oct 2026 from https://github.com/bitweaver/jscalendar (branch master), unchanged:
+  calendar.js        sha256 2131b2276553d59f401c86362664beca7b3d1cbfd61ed93c75c7ac8f8a4e4421
+  calendar-setup.js  sha256 73d3ce51131700aef9fa5d01ea84ebe7adeef4f6e82c9b861298709782c41a2d
+  calendar-en.js     sha256 8c16e91a87fae207bb73f3ec46a26ae9aa5d3df38c86069a606ec049715a7cf8  (from lang/)

@@ -1,0 +1,32 @@
+<html><body><form id="TaxCreditCertForm" onsubmit="return false"><table class="FORM_TAB_BORDER">
+<tr><td>Return For*</td><td><select id="retBrnch"><option value="">--Select--</option><option value="H">Headquarter</option></select></td></tr>
+<tr><td>Period*</td><td><select id="period"><option value="">--Select--</option></select></td></tr>
+<tr><td>TIN</td><td>1000000001</td></tr><tr><td>Taxpayer Name</td><td>GLOBAL 7</td></tr><tr><td></td></tr><tr><td></td></tr>
+<tr><td><button type="button" onclick="doSearch()">Search</button> <input type=button value="Back"></td></tr></table>
+<div id="res"></div></form>
+<script>
+var sel=document.getElementById('period'); for(var y=2006;y<=2025;y++){var o=document.createElement('option');o.value=y+'-'+(y+1);o.text='July '+y+' to June '+(y+1);sel.add(o);}
+var EMP={'2025-2026':[['1000000002','Mr. TEST EMPLOYEE TWO','30,000,000.00','7,824,000.00','0NAM99000000002'],['1000000004','Mrs. TEST EMPLOYEE THREE','24,000,000.00','6,024,000.00',''],['1000000003','Mr. TEST EMPLOYEE ONE','3,600,000.00','78,000.00','']],
+         '2024-2025':[['1000000002','Mr. TEST EMPLOYEE TWO','28,000,000.00','7,224,000.00','0NAM99000000001']]};
+function key(fy,i){return 'paye_'+fy+'_'+i;}
+function doSearch(){ if(document.getElementById('retBrnch').value!='H'){alert('Select Return For');return;}
+  var fy=sel.value; setTimeout(function(){render(fy)},1000);}
+function render(fy){ var rows=EMP[fy]||[]; var res=document.getElementById('res');
+  if(!rows.length){res.innerHTML='<p>No Records Found</p>';return;}
+  var h='<table><tr><td><table><thead><tr><th><input type=checkbox id="selectAll"> Select All</th><th>Sr No.</th><th>Employee Tin</th><th>Employee Name</th><th>Chargeable Income</th><th>Tax Deducted</th><th>TCC No.</th><th></th></tr></thead><tbody>';
+  rows.forEach(function(r,i){var t=r[4]||localStorage.getItem(key(fy,i))||'';
+    h+='<tr><td><input type=checkbox id="listPaye" '+(t?'disabled':'')+' data-i="'+i+'"></td><td>'+(i+1)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td>'+t+'</td><td><a href="#" onclick="mw('+i+',\''+fy+'\');return false;">Get Month-Wise Details</a></td></tr>';});
+  res.innerHTML=h+'</tbody></table></td></tr></table><input type=button value="GenerateTCC" onclick="gen(\''+fy+'\')"> <input type=button value="Back">';}
+function gen(fy){var t=[...document.querySelectorAll('#res input[type=checkbox][data-i]')].filter(c=>c.checked);
+  if(!t.length){alert('Please select atleast one Employee to generate Tax Credit Certificate');return;}
+  if(!confirm('Do you want to generate Tax Credit Certificate?'))return;
+  setTimeout(function(){t.forEach(function(c){localStorage.setItem(key(fy,c.dataset.i),'0NAM2701272'+fy.slice(2,4)+'9'+c.dataset.i);});
+    document.getElementById('res').innerHTML='<p>Tax Credit Certificate generated successfully</p>';},1200);}
+function mw(i,fy){ var d=parent.document; var box=d.createElement('div'); box.id='divPostContent';
+  box.style='position:fixed;top:60px;left:200px;background:#fff;border:2px solid #333;padding:8px';
+  var M=['JUL','AUG','SEP','OCT','NOV','DEC','JAN','FEB','MAR','APR','MAY','JUN'], y=+fy.slice(0,4);
+  var h='<table><tr><th>Month</th><th>Chargeable Income</th><th>Tax Deducted</th></tr>';
+  M.forEach(function(m,k){h+='<tr><td>'+m+'-'+(k<6?y:y+1)+'</td><td>'+(2500000+i*1000).toLocaleString()+'.00</td><td>'+(652000-i*1000).toLocaleString()+'.00</td></tr>';});
+  h+='<tr><td>Total</td><td>-</td><td>-</td></tr><tr><td colspan=3><input type=button value="Close" onclick="this.closest(\'#divPostContent\').remove()"></td></tr></table>';
+  setTimeout(function(){box.innerHTML=h; d.body.appendChild(box);},700);}
+</script></body></html>

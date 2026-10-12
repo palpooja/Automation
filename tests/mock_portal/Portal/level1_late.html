@@ -1,0 +1,9 @@
+<!-- Ledger Level 1 ('Tax Position') that becomes visible only after 4 s, like the slow live portal
+     (CLAUDE_CONTEXT.md, Version 10 notes: it can take ~100 s to fill). -->
+<html><body>
+<div id="firstPageOfAR" style="display:none"><table id="tblData">
+<tr><th>Tax Type</th><th>Outstanding Tax</th></tr>
+<tr><td><a href="#">Value Added Tax</a></td><td>152</td></tr><tr><td><a href="#">PAYE</a></td><td>0</td></tr>
+</table></div>
+<script>setTimeout(function () { document.getElementById('firstPageOfAR').style.display = 'block'; }, 4000);</script>
+</body></html>

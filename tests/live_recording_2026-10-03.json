@@ -1,0 +1,2617 @@
+{
+    "title": "Recording 10/3/2026 at 3:55:16 PM",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 900,
+            "height": 931,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://ura.go.ug/en/etax-login/",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "Home | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 7.2222137451171875,
+            "offsetX": 36.90277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Tax Statement"
+                ],
+                [
+                    "div > div > div:nth-of-type(2) li:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[7]/a"
+                ],
+                [
+                    "pierce/div > div > div:nth-of-type(2) li:nth-of-type(7) > a"
+                ],
+                [
+                    "text/Tax Statement"
+                ]
+            ],
+            "offsetY": 10,
+            "offsetX": 51.5555419921875,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Submit"
+                ],
+                [
+                    "#btnSubmit"
+                ],
+                [
+                    "xpath///*[@id=\"btnSubmit\"]"
+                ],
+                [
+                    "pierce/#btnSubmit"
+                ],
+                [
+                    "text/Submit"
+                ]
+            ],
+            "offsetY": 15.555557250976562,
+            "offsetX": 36.97221374511719,
+            "frame": [
+                0
+            ],
+            "duration": 433.59999999962747
+        },
+        {
+            "type": "navigate",
+            "url": "https://ura.go.ug/en/etax-login/",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "Period-Wise Taxpayer Ledger | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 14.222213745117188,
+            "offsetX": 35.90277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Tax Statement"
+                ],
+                [
+                    "div > div > div:nth-of-type(2) li:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[7]/a"
+                ],
+                [
+                    "pierce/div > div > div:nth-of-type(2) li:nth-of-type(7) > a"
+                ],
+                [
+                    "text/Tax Statement"
+                ]
+            ],
+            "offsetY": 9,
+            "offsetX": 123.5555419921875,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Submit"
+                ],
+                [
+                    "#btnSubmit"
+                ],
+                [
+                    "xpath///*[@id=\"btnSubmit\"]"
+                ],
+                [
+                    "pierce/#btnSubmit"
+                ],
+                [
+                    "text/Submit"
+                ]
+            ],
+            "offsetY": 19.555557250976562,
+            "offsetX": 37.97221374511719,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Value Added Tax[role=\"link\"]"
+                ],
+                [
+                    "#bodywrap > div tr:nth-of-type(3) a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[3]/td[1]/a"
+                ],
+                [
+                    "pierce/#bodywrap > div tr:nth-of-type(3) a"
+                ],
+                [
+                    "text/Value Added Tax"
+                ]
+            ],
+            "offsetY": 8.111114501953125,
+            "offsetX": 96.11111068725586,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 10.22222900390625,
+            "offsetX": 28.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 11.22222900390625,
+            "offsetX": 29.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/AUG-2026"
+                ],
+                [
+                    "#tab tr:nth-of-type(4) > td:nth-of-type(2)"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[2]"
+                ],
+                [
+                    "pierce/#tab tr:nth-of-type(4) > td:nth-of-type(2)"
+                ],
+                [
+                    "text/AUG-2026"
+                ]
+            ],
+            "offsetY": 9.666656494140625,
+            "offsetX": 63.23611068725586,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 10.22222900390625,
+            "offsetX": 33.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 7.22222900390625,
+            "offsetX": 24.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 6.22222900390625,
+            "offsetX": 44.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 6.22222900390625,
+            "offsetX": 44.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 6.22222900390625,
+            "offsetX": 44.861083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 6.22222900390625,
+            "offsetX": 44.861083984375,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "",
+                    "title": "Period-Wise Taxpayer Ledger | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 21.111114501953125,
+            "offsetX": 46.22222900390625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ],
+                [
+                    "xpath///*[@id=\"tblData\"]/tbody/tr[4]/td[7]/a"
+                ],
+                [
+                    "pierce/tr:nth-of-type(4) > td:nth-of-type(7) > a"
+                ]
+            ],
+            "offsetY": 10.22222900390625,
+            "offsetX": 14.861083984375,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Back"
+                ],
+                [
+                    "#backbtn"
+                ],
+                [
+                    "xpath///*[@id=\"backbtn\"]"
+                ],
+                [
+                    "pierce/#backbtn"
+                ],
+                [
+                    "text/Back"
+                ]
+            ],
+            "offsetY": 14.111114501953125,
+            "offsetX": 29.916656494140625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "ArrowLeft"
+        },
+        {
+            "type": "keyUp",
+            "key": "ArrowLeft",
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "Alt",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Home"
+                ],
+                [
+                    "div.nav-breadcrumb a"
+                ],
+                [
+                    "xpath///*[@id=\"wrapper\"]/div[2]/div/ul/li[1]/a"
+                ],
+                [
+                    "pierce/div.nav-breadcrumb a"
+                ],
+                [
+                    "text/Home"
+                ]
+            ],
+            "offsetY": 22.52777099609375,
+            "offsetX": 40.94444274902344,
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/",
+                    "title": ""
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#middle40Drop > span"
+                ],
+                [
+                    "xpath///*[@id=\"middle40Drop\"]/span"
+                ],
+                [
+                    "pierce/#middle40Drop > span"
+                ],
+                [
+                    "text/Login \n\t\t\talert"
+                ]
+            ],
+            "offsetY": 12.030559539794922,
+            "offsetX": 39.1304931640625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Portal"
+                ],
+                [
+                    "#main-header li:nth-of-type(5) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mid-nav-desk\"]/ul/li[5]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/#main-header li:nth-of-type(5) li:nth-of-type(1) > a"
+                ]
+            ],
+            "offsetY": 10.763885498046875,
+            "offsetX": 99.111083984375,
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": ""
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 10.222213745117188,
+            "offsetX": 28.90277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Withholding"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(2) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[2]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(2) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Withholding"
+                ]
+            ],
+            "offsetY": 15.666671752929688,
+            "offsetX": 41.41668701171875,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://docs.google.com/offline/extension/frame?ouid=ue2a4fcf15fe0bdf3",
+                    "title": "Generate Withholding Tax Credit Certificate | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Date Selector[role=\"image\"]"
+                ],
+                [
+                    "img"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[4]/td[2]/img"
+                ],
+                [
+                    "pierce/img"
+                ]
+            ],
+            "offsetY": 2.8472213745117188,
+            "offsetX": 6.0555419921875,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 8.444442749023438,
+            "offsetX": 18.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 8.444442749023438,
+            "offsetX": 18.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 8.444442749023438,
+            "offsetX": 18.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 8.444442749023438,
+            "offsetX": 18.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 8.444442749023438,
+            "offsetX": 18.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#mainBodyId"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]"
+                ],
+                [
+                    "pierce/#mainBodyId"
+                ]
+            ],
+            "offsetY": 193,
+            "offsetX": 719,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#toDt"
+                ],
+                [
+                    "xpath///*[@id=\"toDt\"]"
+                ],
+                [
+                    "pierce/#toDt"
+                ]
+            ],
+            "offsetY": 11.777778625488281,
+            "offsetX": 50.08331298828125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 13.666671752929688,
+            "offsetX": 16.09722900390625,
+            "frame": [
+                0
+            ],
+            "duration": 501.3999999985099
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 17.333332061767578,
+            "offsetX": 138.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "D",
+            "selectors": [
+                [
+                    "aria/Payee ( Deductee )",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 12.666671752929688,
+            "offsetX": 28.09722900390625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Payee ( Deductee )",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 8.333332061767578,
+            "offsetX": 172.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "W",
+            "selectors": [
+                [
+                    "aria/Withholding Agent",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 10.666671752929688,
+            "offsetX": 36.09722900390625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "table:nth-of-type(3) > tbody input"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[3]/tbody/tr/td[1]/input"
+                ],
+                [
+                    "pierce/table:nth-of-type(3) > tbody input"
+                ]
+            ],
+            "offsetY": 3.944427490234375,
+            "offsetX": 8.11111068725586,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate TCC[role=\"button\"]"
+                ],
+                [
+                    "#generateTCCBtn"
+                ],
+                [
+                    "xpath///*[@id=\"generateTCCBtn\"]"
+                ],
+                [
+                    "pierce/#generateTCCBtn"
+                ],
+                [
+                    "text/Generate TCC"
+                ]
+            ],
+            "offsetY": 3.111114501953125,
+            "offsetX": 42.625,
+            "frame": [
+                0
+            ],
+            "duration": 4178.900000002235,
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Back[role=\"button\"]"
+                ],
+                [
+                    "table:nth-of-type(2) input"
+                ],
+                [
+                    "xpath///*[@id=\"TCCSummary\"]/table[2]/tbody/tr/td/input"
+                ],
+                [
+                    "pierce/table:nth-of-type(2) input"
+                ],
+                [
+                    "text/Back"
+                ]
+            ],
+            "offsetY": 12.666667938232422,
+            "offsetX": 28.04168701171875,
+            "frame": [
+                0
+            ],
+            "duration": 1700.5999999977648,
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Date Selector[role=\"image\"]"
+                ],
+                [
+                    "img"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[4]/td[2]/img"
+                ],
+                [
+                    "pierce/img"
+                ]
+            ],
+            "offsetY": 13.847221374511719,
+            "offsetX": 9.0555419921875,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 6.4444427490234375,
+            "offsetX": 17.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#mainBodyId"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]"
+                ],
+                [
+                    "pierce/#mainBodyId"
+                ]
+            ],
+            "offsetY": 193,
+            "offsetX": 727,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 8.666671752929688,
+            "offsetX": 33.09722900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 7.333332061767578,
+            "offsetX": 197.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "W",
+            "selectors": [
+                [
+                    "aria/Withholding Agent",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 10.666671752929688,
+            "offsetX": 37.09722900390625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/0NAM27012732939"
+                ],
+                [
+                    "#tccNo1"
+                ],
+                [
+                    "xpath///*[@id=\"tccNo1\"]"
+                ],
+                [
+                    "pierce/#tccNo1"
+                ],
+                [
+                    "text/0NAM27012732939"
+                ]
+            ],
+            "offsetY": 34.666656494140625,
+            "offsetX": 23.138916015625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Control"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "c"
+        },
+        {
+            "type": "keyUp",
+            "key": "c",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "c"
+        },
+        {
+            "type": "keyUp",
+            "key": "c",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "c"
+        },
+        {
+            "type": "keyUp",
+            "key": "c",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "c"
+        },
+        {
+            "type": "keyUp",
+            "key": "c",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "keyUp",
+            "key": "Control",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Back"
+                ],
+                [
+                    "table:nth-of-type(1) input:nth-of-type(3)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[3]"
+                ],
+                [
+                    "pierce/table:nth-of-type(1) input:nth-of-type(3)"
+                ],
+                [
+                    "text/Back"
+                ]
+            ],
+            "offsetY": 18.666671752929688,
+            "offsetX": 14.986083984375,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 11.222213745117188,
+            "offsetX": 38.90277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Copy of Tax Credit Certificate for WTH"
+                ],
+                [
+                    "form > div > div > div:nth-of-type(1) div > div:nth-of-type(2) li:nth-of-type(6) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[6]/a"
+                ],
+                [
+                    "pierce/form > div > div > div:nth-of-type(1) div > div:nth-of-type(2) li:nth-of-type(6) > a"
+                ],
+                [
+                    "text/Generate Copy of Tax Credit Certificate for WTH"
+                ]
+            ],
+            "offsetY": 28.111114501953125,
+            "offsetX": 125.41668701171875,
+            "frame": [
+                0
+            ],
+            "duration": 610.3000000007451,
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/----Select----",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#retBrnch"
+                ],
+                [
+                    "xpath///*[@id=\"retBrnch\"]"
+                ],
+                [
+                    "pierce/#retBrnch"
+                ]
+            ],
+            "offsetY": 12.333332061767578,
+            "offsetX": 187.40277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "H",
+            "selectors": [
+                [
+                    "aria/Headquarter",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#retBrnch"
+                ],
+                [
+                    "xpath///*[@id=\"retBrnch\"]"
+                ],
+                [
+                    "pierce/#retBrnch"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Date Selector[role=\"image\"]"
+                ],
+                [
+                    "img"
+                ],
+                [
+                    "xpath///*[@id=\"copyWTHTCC\"]/table/tbody/tr[3]/td[2]/img"
+                ],
+                [
+                    "pierce/img"
+                ]
+            ],
+            "offsetY": 6.625,
+            "offsetX": 13.1944580078125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "doubleClick",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[3]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ],
+                [
+                    "text/‹"
+                ]
+            ],
+            "offsetY": 3.4444427490234375,
+            "offsetX": 14.611083984375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#mainBodyId"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]"
+                ],
+                [
+                    "pierce/#mainBodyId"
+                ]
+            ],
+            "offsetY": 159,
+            "offsetX": 733,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#deducteeTIN"
+                ],
+                [
+                    "xpath///*[@id=\"deducteeTIN\"]"
+                ],
+                [
+                    "pierce/#deducteeTIN"
+                ]
+            ],
+            "offsetY": 0.7777786254882812,
+            "offsetX": 101.40277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tfoot input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"copyWTHTCC\"]/table/tfoot/tr/td/input[1]"
+                ],
+                [
+                    "pierce/tfoot input:nth-of-type(1)"
+                ],
+                [
+                    "text/Search"
+                ]
+            ],
+            "offsetY": 15.222213745117188,
+            "offsetX": 19.09722900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#tccRefNo"
+                ],
+                [
+                    "xpath///*[@id=\"tccRefNo\"]"
+                ],
+                [
+                    "pierce/#tccRefNo"
+                ]
+            ],
+            "offsetY": 14,
+            "offsetX": 74.40277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#deducteeTIN"
+                ],
+                [
+                    "xpath///*[@id=\"deducteeTIN\"]"
+                ],
+                [
+                    "pierce/#deducteeTIN"
+                ]
+            ],
+            "offsetY": 15.777778625488281,
+            "offsetX": 83.40277099609375,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Back"
+                ],
+                [
+                    "table input:nth-of-type(3)"
+                ],
+                [
+                    "xpath///*[@id=\"copyWTHTCC\"]/table/tfoot/tr/td/input[3]"
+                ],
+                [
+                    "pierce/table input:nth-of-type(3)"
+                ],
+                [
+                    "text/Back"
+                ]
+            ],
+            "offsetY": 8.222213745117188,
+            "offsetX": 18.986083984375,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 14.222213745117188,
+            "offsetX": 41.90277099609375,
+            "frame": [
+                0
+            ],
+            "duration": 406.0999999977648
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#bodywrap"
+                ],
+                [
+                    "xpath///*[@id=\"bodywrap\"]"
+                ],
+                [
+                    "pierce/#bodywrap"
+                ]
+            ],
+            "offsetY": 237,
+            "offsetX": 1188,
+            "frame": [
+                0
+            ],
+            "duration": 44775.5
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "form > div > div"
+                ],
+                [
+                    "xpath///*[@id=\"bodywrap\"]/div[1]/div/div[1]/form/div/div"
+                ],
+                [
+                    "pierce/form > div > div"
+                ]
+            ],
+            "offsetY": 219.22222137451172,
+            "offsetX": 1188,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Withholding"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(2) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[2]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(2) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Withholding"
+                ]
+            ],
+            "offsetY": 13.666671752929688,
+            "offsetX": 94.41668701171875,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://docs.google.com/offline/extension/frame?ouid=ue2a4fcf15fe0bdf3",
+                    "title": "Generate Withholding Tax Credit Certificate | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 27.111114501953125,
+            "offsetX": 22.22222900390625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Date Selector[role=\"image\"]"
+                ],
+                [
+                    "img"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[4]/td[2]/img"
+                ],
+                [
+                    "pierce/img"
+                ]
+            ],
+            "offsetY": 5.847221374511719,
+            "offsetX": 14.0555419921875,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 16.333332061767578,
+            "offsetX": 208.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 16.333332061767578,
+            "offsetX": 208.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "W",
+            "selectors": [
+                [
+                    "aria/Withholding Agent",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#generateFor"
+                ],
+                [
+                    "xpath///*[@id=\"generateFor\"]"
+                ],
+                [
+                    "pierce/#generateFor"
+                ]
+            ],
+            "offsetY": 21.333332061767578,
+            "offsetX": 197.26388549804688,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Date Selector[role=\"image\"]"
+                ],
+                [
+                    "img"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[4]/td[2]/img"
+                ],
+                [
+                    "pierce/img"
+                ]
+            ],
+            "offsetY": 10.847221374511719,
+            "offsetX": 6.0555419921875,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[4]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ]
+            ],
+            "offsetY": 7.4444427490234375,
+            "offsetX": 12.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[4]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ]
+            ],
+            "offsetY": 7.4444427490234375,
+            "offsetX": 12.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/‹",
+                    "aria/[role=\"generic\"]"
+                ],
+                [
+                    "td.hilite > div"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]/div[4]/table/thead/tr[2]/td[2]/div"
+                ],
+                [
+                    "pierce/td.hilite > div"
+                ]
+            ],
+            "offsetY": 7.4444427490234375,
+            "offsetX": 12.22222900390625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#mainBodyId"
+                ],
+                [
+                    "xpath///*[@id=\"mainBodyId\"]"
+                ],
+                [
+                    "pierce/#mainBodyId"
+                ]
+            ],
+            "offsetY": 200,
+            "offsetX": 634,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search Reset Back"
+                ],
+                [
+                    "tr.tdbar > td"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td"
+                ],
+                [
+                    "pierce/tr.tdbar > td"
+                ],
+                [
+                    "text/Search  Reset\n\t\t\t\t\t\n\t\t\t\t\t"
+                ]
+            ],
+            "offsetY": 1.6666717529296875,
+            "offsetX": 571.5555553436279,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "tr.tdbar input:nth-of-type(1)"
+                ],
+                [
+                    "xpath///*[@id=\"GenTaxCreditCert\"]/table[1]/tbody/tr[8]/td/input[1]"
+                ],
+                [
+                    "pierce/tr.tdbar input:nth-of-type(1)"
+                ]
+            ],
+            "offsetY": 13.666671752929688,
+            "offsetX": 26.09722900390625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/   Select All",
+                    "aria/[role=\"checkbox\"]"
+                ],
+                [
+                    "#selectAll"
+                ],
+                [
+                    "xpath///*[@id=\"selectAll\"]"
+                ],
+                [
+                    "pierce/#selectAll"
+                ]
+            ],
+            "offsetY": 8.333343505859375,
+            "offsetX": 6.958332061767578,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "keyDown",
+            "frame": [
+                0
+            ],
+            "target": "main",
+            "key": "Alt"
+        },
+        {
+            "type": "keyUp",
+            "key": "Tab",
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Logout[role=\"button\"]"
+                ],
+                [
+                    "#logoutFormISSP > table input"
+                ],
+                [
+                    "xpath///*[@id=\"logoutFormISSP\"]/table/tbody/tr[1]/td/input"
+                ],
+                [
+                    "pierce/#logoutFormISSP > table input"
+                ],
+                [
+                    "text/Logout"
+                ]
+            ],
+            "offsetY": 16,
+            "offsetX": 55,
+            "frame": [
+                0
+            ],
+            "duration": 792.3000000007451,
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "Login Page | eTax - Uganda Revenue Authority"
+                }
+            ]
+        }
+    ]
+}

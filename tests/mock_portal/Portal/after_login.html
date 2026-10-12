@@ -1,0 +1,5 @@
+<!-- After login the portal draws its second frame a moment later (here 0.5 s). Used to prove the browser keeps loading while the program waits for the person. -->
+<html><body><p>after login</p>
+<script>window.t0 = Date.now(); setTimeout(function () {          // the portal frame arrives after login
+  var f = document.createElement('iframe'); f.src = 'after_login_frame.html'; document.body.appendChild(f); }, 500);</script>
+</body></html>

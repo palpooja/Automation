@@ -1,0 +1,29 @@
+<html><body><div id="GenTaxCreditCert">
+<table class="FORM_TAB_BORDER"><tr><td>Return Date From</td><td><input id="frmDt" readonly onblur="getToDate(this)">
+<img title="Date Selector" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="16" height="16" onclick="openCal()"></td></tr>
+<tr><td>Return Date To</td><td><input id="toDt" readonly></td></tr>
+<tr><td>Generate For</td><td><select id="generateFor"><option value=""></option><option value="D">Payee ( Deductee )</option><option value="W">Withholding Agent</option></select></td></tr>
+<tr class="tdbar"><td><input type="button" value="Search" onclick="doSearch()"></td><td><input type="button" value="Reset"></td></tr></table>
+<div id="cal" style="display:none;position:absolute;top:40px;left:300px;background:#eee"></div><div id="res"></div></div>
+<script>
+var M=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var cy=2026, cm=9; function pad(n){return (n<10?'0':'')+n}
+function getToDate(el){var p=el.value.split('/'); if(p.length<3)return; var last=new Date(+p[2],+p[1],0).getDate(); document.getElementById('toDt').value=last+'/'+p[1]+'/'+p[2];}
+function drawCal(){var c=document.getElementById('cal');
+  var h='<table><thead><tr><td onclick="cy--;drawCal()">&laquo;</td><td onclick="cm--;if(cm<0){cm=11;cy--};drawCal()">&lsaquo;</td><td>'+M[cm]+', '+cy+'</td><td onclick="cm++;if(cm>11){cm=0;cy++};drawCal()">&rsaquo;</td><td onclick="cy++;drawCal()">&raquo;</td></tr></thead><tbody><tr>';
+  var first=new Date(cy,cm,1).getDay(); for(var i=0;i<first;i++) h+='<td class="other">'+(28+i)+'</td>';
+  for(var d=1;d<=new Date(cy,cm+1,0).getDate();d++){h+='<td onclick="pick('+d+')">'+d+'</td>'; if((first+d)%7==0) h+='</tr><tr>';}
+  c.innerHTML=h+'</tr></tbody></table>';}
+function openCal(){document.getElementById('cal').style.display='block';drawCal();}
+function pick(d){document.getElementById('frmDt').value=pad(d)+'/'+pad(cm+1)+'/'+cy;document.getElementById('cal').style.display='none';}
+function doSearch(){var q='?frm='+encodeURIComponent(frmDt.value)+'&to='+encodeURIComponent(toDt.value)+'&gf='+generateFor.value;
+  setTimeout(function(){location.href=location.pathname+q;},1500);}      // full page reload, like a form POST
+var qs=new URLSearchParams(location.search);
+if(qs.get('frm')){ frmDt.value=qs.get('frm'); toDt.value=qs.get('to'); generateFor.value=qs.get('gf');
+  var p=qs.get('to').split('/'); var per=p[1]+'/'+p[2]; var gf=qs.get('gf');
+  var n=(gf=='D')?({'01/2026':0,'02/2026':2}[per]):({'01/2026':3,'02/2026':0}[per]); if(n===undefined)n=1;
+  if(n){var h='<table class="FORM_TAB_BORDER"><tr><th><input type=checkbox></th><th>Sr.No</th><th>Agent TIN</th><th>Agent Name</th><th>Period</th><th>Return No</th><th>Nature of Payment</th><th>Gross Amount</th><th>Tax Withheld</th><th>TCC No</th><th>Status</th></tr>';
+    for(var i=1;i<=n;i++) h+='<tr><td><input type=checkbox></td><td>'+i+'</td><td>10000'+(gf=='D'?'1':'9')+'257'+i+'</td><td>'+(gf=='D'?'Agent ':'Supplier ')+i+'</td><td>'+per+'</td><td>LTO'+i+'</td><td>Supplies</td><td>1,000,000.00</td><td>60,000.00</td><td></td><td>Pending</td></tr>';
+    document.getElementById('res').innerHTML=h+'</table>';}
+}
+</script></body></html>

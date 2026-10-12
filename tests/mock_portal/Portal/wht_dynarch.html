@@ -1,0 +1,85 @@
+<!-- Practice copy of URA's 'Generate Withholding Tax Credit Certificate' page with the REAL date
+     picker the portal uses (The DHTML Calendar, see jscalendar/SOURCE.txt).  Built from the live
+     screenshots of 5 Oct 2026 (logs/screen_error_2025-07.png ...):
+       * 'Return Date From' is read-only and filled only through the calendar;
+       * the calendar opens under its icon, left edges aligned, and then covers the Search button;
+       * 'Return Date To' is filled by the page when the From box loses focus (getToDate);
+       * Search reloads the whole page (like a form post) and the page shows the results.
+     Every search is remembered in sessionStorage 'searches' so a test can check which From/To
+     dates were really sent. -->
+<html><head>
+<style>
+  body { margin: 0; font: 13px Arial, sans-serif; }
+  #GenTaxCreditCert { width: 1000px; margin: 20px 40px; }
+  #GenTaxCreditCert td { height: 24px; padding: 0 4px; }
+  td.lbl { width: 210px; }
+  td.fld { width: 330px; }
+  #frmDt { width: 160px; }
+  /* minimal look of the portal's calendar: opaque, on top, combos hidden until used */
+  .jscalendar { background: #fff; border: 1px solid #556; font: 11px Arial, sans-serif; z-index: 1000; }
+  .jscalendar table { border-collapse: collapse; }
+  .jscalendar td { padding: 2px 4px; text-align: center; cursor: default; }
+  .jscalendar thead .title { font-weight: bold; }
+  .jscalendar .day.othermonth { color: #aaa; }
+  .jscalendar .combo { position: absolute; display: none; background: #eef; border: 1px solid #556; }
+  #bar td { padding-left: 250px; }
+</style>
+<script src="jscalendar/calendar.js"></script>
+<script src="jscalendar/calendar-en.js"></script>
+<script src="jscalendar/calendar-setup.js"></script>
+</head><body>
+<div id="GenTaxCreditCert">
+<table class="FORM_TAB_BORDER">
+  <tr><td class="lbl">Generate Certificate as</td><td class="fld">
+      <select id="generateFor"><option value=""></option><option value="D">Payee ( Deductee )</option>
+      <option value="W">Withholding Agent</option></select></td><td></td><td></td></tr>
+  <tr><td class="lbl">Return For</td><td class="fld"><select id="retBrnch"><option value="H">Headquarter</option></select></td><td></td><td></td></tr>
+  <tr><td class="lbl">Return Date From</td><td class="fld"><input id="frmDt" readonly onblur="getToDate(this)">
+      <img id="frmDtImg" title="Date Selector" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="16" height="16"
+           style="border:1px solid #36c;vertical-align:middle"></td>
+      <td>Return Date To</td><td><input id="toDt" readonly></td></tr>
+  <tr><td class="lbl">Withholding Agent TIN</td><td class="fld"><input id="agentTin"></td><td>Taxpayer Name</td><td><input readonly></td></tr>
+  <tr><td class="lbl">Return Number</td><td class="fld"><input id="retNo"></td><td></td><td></td></tr>
+  <tr><td class="lbl">Nature Of Payment</td><td class="fld"><select><option>--Select--</option></select></td><td></td><td></td></tr>
+  <tr class="tdbar" id="bar"><td colspan="4"><input type="button" value="Search" onclick="doSearch()">
+      <input type="button" value="Reset"> <input type="button" value="Back"></td></tr>
+</table>
+<div id="res"></div>
+</div>
+<script>
+Calendar.setup({inputField: "frmDt", ifFormat: "%d/%m/%Y", button: "frmDtImg", align: "Bl",
+                singleClick: true, showsTime: true, firstDay: 1, showOthers: true});
+function getToDate(el) {
+  var p = el.value.split('/'); if (p.length < 3) return;
+  var last = new Date(+p[2], +p[1], 0).getDate();
+  document.getElementById('toDt').value = (last < 10 ? '0' : '') + last + '/' + p[1] + '/' + p[2];
+}
+function doSearch() {
+  var q = '?frm=' + encodeURIComponent(frmDt.value) + '&to=' + encodeURIComponent(toDt.value) +
+          '&gf=' + generateFor.value;
+  setTimeout(function () { location.href = location.pathname + q; }, 1500);   // full page reload
+}
+var qs = new URLSearchParams(location.search);
+if (qs.get('frm') !== null) {
+  frmDt.value = qs.get('frm'); toDt.value = qs.get('to'); generateFor.value = qs.get('gf');
+  var s = JSON.parse(sessionStorage.getItem('searches') || '[]');
+  s.push([qs.get('frm'), qs.get('to'), qs.get('gf')]); sessionStorage.setItem('searches', JSON.stringify(s));
+  var t = qs.get('to').split('/'), per = t[1] + '/' + t[2];
+  // TEST RULE, not known portal behaviour: rows only when From is the first day of the To month,
+  // so a search sent with a wrong From date can never pass as a correct month
+  var ok = qs.get('frm') === '01/' + per;
+  var n = ok ? ({'07/2025': 1, '08/2025': 2}[per] || 0) : 0;
+  if (n) {
+    var h = '<table class="FORM_TAB_BORDER"><tr><th><input type=checkbox></th><th>Sr.No</th><th>Agent TIN</th>' +
+            '<th>Agent Name</th><th>Period</th><th>Return No</th><th>Nature of Payment</th><th>Gross Amount</th>' +
+            '<th>Tax Withheld</th><th>TCC No</th><th>Status</th></tr>';
+    for (var i = 1; i <= n; i++)
+      h += '<tr><td><input type=checkbox></td><td>' + i + '</td><td>100001257' + i + '</td><td>Agent ' + i +
+           '</td><td>' + per + '</td><td>LTO' + i + '</td><td>Supplies</td><td>1,000,000.00</td><td>60,000.00</td>' +
+           '<td></td><td>Pending</td></tr>';
+    document.getElementById('res').innerHTML = h + '</table>';
+  } else {
+    document.getElementById('res').innerHTML = '<div class="msg">No records found</div>';
+  }
+}
+</script></body></html>

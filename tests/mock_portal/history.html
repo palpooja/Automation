@@ -1,0 +1,44 @@
+<html><body>
+<select id="rtnType"><option value="">--Select--</option>
+<option value="VATRT">Monthly VAT Return</option><option value="PAYERT">PAYE Return</option>
+<option value="EXCRT">Local Excise Duty Return</option><option value="WTHDRT">Withholding Tax Return</option><option value="RENTRT">Rental Income Tax Return</option><option value="NEWRT">Brand New Return Type</option></select>
+<span id="br" style="display:none"><select id="branchDrpDwn"><option value="H">Headquarter</option><option value="B">Both</option></select></span>
+From <input type="text" id="fromDate"> To <input type="text" id="toDate">
+<input type="button" id="search" value="Search">
+<div id="out"></div>
+<script>
+var DATA={VATRT:[["R-VAT-01","06/2026","Submitted"],["R-VAT-02","05/2026","Submitted"],["R-VAT-BAD","04/2026","Submitted"]],
+          PAYERT:[], EXCRT:[["R-EXC-01","06/2026","Submitted"]],
+          /* rows laid out like the live portal (10.13): Sr, Reference No., Period From, Period To, Applied Date,
+             Applied For Branch, Application Type, Status - newest first */
+          WTHDRT:[["1","CR0127000000004","01/08/2025","31/08/2025","22/09/2025","JINJA BRANCH","Original","Submitted"],
+                  ["2","CR0127000000003","01/08/2025","31/08/2025","20/09/2025","MAIN BRANCH","Amended","Submitted"],
+                  ["3","CR0127000000002","01/08/2025","31/08/2025","15/09/2025","MAIN BRANCH","Original","Submitted"],
+                  ["4","CR0127000000001","01/07/2025","31/07/2025","14/08/2025","MAIN BRANCH","Original","Submitted"]],
+          /* 10.14: a return the portal is slow to open (live 8 Oct: never opened) - its View opens the tab only
+             after sessionStorage 'openDelayMs' (the other one opens at once) */
+          RENTRT:[["1","CR01270SLOW0002","01/08/2025","31/08/2025","15/09/2025","MAIN BRANCH","Original","Submitted"],
+                  ["2","CR0127000000099","01/07/2025","31/07/2025","14/08/2025","MAIN BRANCH","Original","Submitted"]]};
+function slowOpen(id){ var d=+(sessionStorage.getItem('openDelayMs')||0);
+  setTimeout(function(){ window.open('return.html?id='+id, '_blank'); }, d); return false; }
+var page=1;
+document.getElementById('rtnType').onchange=function(){document.getElementById('br').style.display=(this.value=='VATRT'||this.value=='PAYERT'||this.value=='WTHDRT')?'inline':'none'};
+function render(){
+  var t=document.getElementById('rtnType').value, rows=DATA[t]||[], per=2, pages=Math.max(1,Math.ceil(rows.length/per));
+  window.lastBranch=document.getElementById('branchDrpDwn').value;
+  if(!rows.length){document.getElementById('out').innerHTML='<div id="returnHistory">No records found</div>';return;}
+  var h='<div>Total Records : '+rows.length+'</div><div>Current Page : '+page+' / '+pages+'</div><table id="returnHistory"><thead><tr>';
+  for(var i=1;i<=11;i++) h+='<th>H'+i+'</th>'; h+='</tr></thead><tbody>';
+  rows.slice((page-1)*per,page*per).forEach(function(r){
+    if(r.length>3){ h+='<tr>'; for(var i=0;i<10;i++) h+='<td>'+(r[i]||'')+'</td>';
+      if(r[1].indexOf('SLOW')>=0) h+='<td><a href="#" onclick="return slowOpen(\''+r[1]+'\')">View</a></td></tr>';
+      else h+='<td><a href="return.html?id='+r[1]+'" target="_blank">View</a></td></tr>'; return; }
+    h+='<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td>';
+    for(var i=4;i<=10;i++) h+='<td>c'+i+'</td>';
+    h+='<td><a href="return.html?id='+r[0]+'" target="_blank">View</a></td></tr>';});
+  h+='</tbody></table>'; if(page<pages) h+='<a href="#" onclick="nextPage();return false;">Next</a>';
+  document.getElementById('out').innerHTML=h;}
+// a test can make page turns slow, like the live portal (5 Oct 2026: 6-20 s): sessionStorage 'nextDelayMs'
+function nextPage(){var d=+(sessionStorage.getItem('nextDelayMs')||0); setTimeout(function(){page++;render();},d);}
+document.getElementById('search').onclick=function(){page=1;window.lastDates=[fromDate.value,toDate.value];setTimeout(render,300)};
+</script></body></html>

@@ -1,0 +1,19 @@
+<html><body><h1>Return</h1><p>Return summary line</p>
+<input type="button" id="printWthSchid" value="Print with Schedules">
+<script>
+// After 'Print with Schedules' the portal builds the schedule view and THEN calls window.print()
+// (the old Selenium program 4.3 made its PDF from that print call).  ?mode= picks the behaviour.
+var mode = new URLSearchParams(location.search).get('mode') || 'fast';
+function addSchedules() {
+  document.body.insertAdjacentHTML('beforeend', '<h2>SCHEDULES FOR THIS RETURN</h2>' + '<p>schedule line</p>'.repeat(50));
+}
+document.getElementById('printWthSchid').onclick = function () {
+  if (mode === 'fast') { addSchedules(); window.print(); }
+  else if (mode === 'slow') {          // fetches its schedules from the server (7 s), then prints
+    fetch('/slow?ms=7000').then(function () { addSchedules(); window.print(); }); }
+  else if (mode === 'busy') {          // keeps changing the page and never prints
+    setInterval(function () { document.body.insertAdjacentHTML('beforeend', '<p>.</p>'); }, 500); }
+  else if (mode === 'newtab') { window.open('schedules_tab.html', '_blank'); }
+  // mode 'never': nothing happens - like a VAT return now that URA gives no VAT schedules
+};
+</script></body></html>

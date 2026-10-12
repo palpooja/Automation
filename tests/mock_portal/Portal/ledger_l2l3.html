@@ -1,0 +1,48 @@
+<!-- One Ledger month as the program meets it: Level 2 (#levelTwoOfAR) with Payment links, Level 3-2
+     (#levelThreeTwoOfAR, opens after 0.8 s) with 'Export To Excel' (downloads an HTML table named .xls,
+     like the portal's file - see engines/excel_files.py) and Back (Level 2 again after 0.6 s).
+     sessionStorage 'exportMode': 'same' (default) = the downloaded file holds exactly the on-screen box;
+     'extra' = the file has one more heading line (to prove the screen-copy check reports a difference). -->
+<html><body>
+<div id="levelTwoOfAR">
+  <h4>Period-wise Taxpayer Ledger -&gt; Level - 2</h4>
+  <table id="tblData">
+    <tr><th>S/N</th><th>Period</th><th>Return</th><th>Assessment</th><th>Penalty</th><th>Interest</th><th>Payment</th><th>Net Position</th></tr>
+    <tr><td>1</td><td>JUN-2026</td><td>100</td><td>0</td><td>0</td><td>0</td><td><a href="#" onclick="openL3('JUN-2026');return false;">12,487,927</a></td><td>0</td></tr>
+    <tr><td>2</td><td>MAY-2026</td><td>90</td><td>0</td><td>0</td><td>0</td><td><a href="#" onclick="openL3('MAY-2026');return false;">8,068,063</a></td><td>0</td></tr>
+  </table>
+</div>
+<div id="levelThreeTwoOfAR" style="display:none">
+  <h4>Period-wise Taxpayer Ledger -&gt; Level - 3-2 (Details Of Payment)</h4>
+  <table id="l3"></table>
+  <div class="bar"><input type="button" id="backbtn" value="Back" onclick="back()">
+    <input type="button" value="Export To Excel" onclick="exportFile()"></div>
+</div>
+<script>
+function openL3(m) {
+  setTimeout(function () {
+    document.getElementById('l3').innerHTML =
+      '<tr><td colspan="4">Tax Position as at 05/10/2026 03:13:41</td></tr>' +
+      '<tr><td colspan="4">Period: ' + m + '</td></tr>' +
+      '<tr><th>Sr No.</th><th>Payment Basis</th><th>Payment Registration Number</th><th>Amount</th></tr>' +
+      '<tr><td>1</td><td>Payment (PRN)</td><td>2270000505613</td><td>13,769,598</td></tr>';
+    document.getElementById('levelTwoOfAR').style.display = 'none';
+    document.getElementById('levelThreeTwoOfAR').style.display = 'block';
+  }, 800);
+}
+function back() {
+  document.getElementById('levelThreeTwoOfAR').style.display = 'none';
+  setTimeout(function () { document.getElementById('levelTwoOfAR').style.display = 'block'; }, 600);
+}
+function exportFile() {
+  var extra = sessionStorage.getItem('exportMode') === 'extra'
+    ? '<table><tr><td>URA export heading</td></tr></table>' : '';
+  var html = '<html><body>' + extra + '<table>' + document.getElementById('l3').innerHTML + '</table></body></html>';
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([html], {type: 'application/vnd.ms-excel'}));
+  a.download = 'Level3.xls';
+  document.body.appendChild(a);
+  a.click();
+}
+</script>
+</body></html>

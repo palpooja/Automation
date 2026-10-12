@@ -1,0 +1,810 @@
+{
+    "title": "Recording 10/8/2026 at 7:39:07 PM",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 1693,
+            "height": 1026,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://ura.go.ug/en/etax-login/",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "Home | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#main-header"
+                ],
+                [
+                    "xpath///*[@id=\"main-header\"]"
+                ],
+                [
+                    "pierce/#main-header"
+                ]
+            ],
+            "offsetY": 79,
+            "offsetX": 1595
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#main-header"
+                ],
+                [
+                    "xpath///*[@id=\"main-header\"]"
+                ],
+                [
+                    "pierce/#main-header"
+                ]
+            ],
+            "offsetY": 87,
+            "offsetX": 1571
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 3.933319091796875,
+            "offsetX": 13.14996337890625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "form > div > div"
+                ],
+                [
+                    "xpath///*[@id=\"bodywrap\"]/div[1]/div/div[1]/form/div/div"
+                ],
+                [
+                    "pierce/form > div > div"
+                ]
+            ],
+            "offsetY": 166.9333324432373,
+            "offsetX": 848,
+            "frame": [
+                0
+            ],
+            "button": "secondary"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Return"
+                ],
+                [
+                    "div > div:nth-of-type(1) > div > ul > li:nth-of-type(2) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/a"
+                ],
+                [
+                    "pierce/div > div:nth-of-type(1) > div > ul > li:nth-of-type(2) > a"
+                ]
+            ],
+            "offsetY": 25.866661071777344,
+            "offsetX": 71.73333168029785,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Pay As You Earn"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Pay"
+                ]
+            ],
+            "offsetY": 23.733322143554688,
+            "offsetX": 83.39996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 13.933319091796875,
+            "offsetX": 46.9166259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Pay As You Earn"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Pay"
+                ]
+            ],
+            "offsetY": 10.733322143554688,
+            "offsetX": 101.39996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 25.933319091796875,
+            "offsetX": 43.9166259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/View return history"
+                ],
+                [
+                    "form > div > div > div:nth-of-type(1) div > div:nth-of-type(2) li:nth-of-type(4) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[4]/a"
+                ],
+                [
+                    "pierce/form > div > div > div:nth-of-type(1) div > div:nth-of-type(2) li:nth-of-type(4) > a"
+                ],
+                [
+                    "text/View return history"
+                ]
+            ],
+            "offsetY": 18.5333251953125,
+            "offsetX": 59.39996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 23.933319091796875,
+            "offsetX": 38.9166259765625
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Pay As You Earn"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Pay"
+                ]
+            ],
+            "offsetY": 13.733322143554688,
+            "offsetX": 26.39996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Close"
+                ],
+                [
+                    "#process-static-modal button.btn-secondary"
+                ],
+                [
+                    "xpath///*[@id=\"process-static-modal\"]/div/div/form/div[2]/button[1]"
+                ],
+                [
+                    "pierce/#process-static-modal button.btn-secondary"
+                ]
+            ],
+            "offsetY": 19.933319091796875,
+            "offsetX": 7.9166259765625
+        },
+        {
+            "type": "navigate",
+            "url": "https://ura.go.ug/en/etax-login/",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Home"
+                ],
+                [
+                    "div.nav-breadcrumb a"
+                ],
+                [
+                    "xpath///*[@id=\"wrapper\"]/div[2]/div/ul/li[1]/a"
+                ],
+                [
+                    "pierce/div.nav-breadcrumb a"
+                ],
+                [
+                    "text/Home"
+                ]
+            ],
+            "offsetY": 24.983322143554688,
+            "offsetX": 26.433319091796875,
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/",
+                    "title": "Home - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#middle40Drop > span > span"
+                ],
+                [
+                    "xpath///*[@id=\"middle40Drop\"]/span/span"
+                ],
+                [
+                    "pierce/#middle40Drop > span > span"
+                ]
+            ],
+            "offsetY": 9.2877197265625,
+            "offsetX": 3.8187255859375
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Portal"
+                ],
+                [
+                    "#main-header li:nth-of-type(5) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mid-nav-desk\"]/ul/li[5]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/#main-header li:nth-of-type(5) li:nth-of-type(1) > a"
+                ]
+            ],
+            "offsetY": 25.899993896484375,
+            "offsetX": 110.0999755859375,
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Skip"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"parishMsgA\"]/h5/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Skip"
+                ]
+            ],
+            "offsetY": 9.933319091796875,
+            "offsetX": 17.14996337890625,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Generate Tax Credit Certificate for Pay As You Earn"
+                ],
+                [
+                    "li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "xpath///*[@id=\"mailbox\"]/ul/li[2]/div/div[2]/ul/li[1]/a"
+                ],
+                [
+                    "pierce/li:nth-of-type(2) > div > div:nth-of-type(2) li:nth-of-type(1) > a"
+                ],
+                [
+                    "text/Generate Tax Credit Certificate for Pay"
+                ]
+            ],
+            "offsetY": 26.733322143554688,
+            "offsetX": 51.39996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/--Select--",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ]
+            ],
+            "offsetY": 9.733329772949219,
+            "offsetX": 157.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "2026-2027",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"TaxCreditCertForm\"]/table/tbody/tr[7]/td/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Search"
+                ]
+            ],
+            "offsetY": 10.333328247070312,
+            "offsetX": 21.89996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "",
+                    "title": "Generate PAYE Tax Credit Certificate | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "html"
+                ],
+                [
+                    "xpath//html"
+                ],
+                [
+                    "pierce/html"
+                ]
+            ],
+            "offsetY": 178,
+            "offsetX": 1309,
+            "frame": [
+                0
+            ],
+            "duration": 1751.800000011921
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#TaxCreditCertForm > table:nth-of-type(1) tr:nth-of-type(4) > td:nth-of-type(2)"
+                ],
+                [
+                    "xpath///*[@id=\"TaxCreditCertForm\"]/table[1]/tbody/tr[4]/td[2]"
+                ],
+                [
+                    "pierce/#TaxCreditCertForm > table:nth-of-type(1) tr:nth-of-type(4) > td:nth-of-type(2)"
+                ]
+            ],
+            "offsetY": 4.5999908447265625,
+            "offsetX": 799.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "offsetY": 8.733329772949219,
+            "offsetX": 143.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "offsetY": 11.733329772949219,
+            "offsetX": 147.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "offsetY": 11.733329772949219,
+            "offsetX": 147.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "change",
+            "value": "2025-2026",
+            "selectors": [
+                [
+                    "aria/July 2025 to June 2026",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "frame": [
+                0
+            ],
+            "target": "main"
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "offsetY": 18.73332977294922,
+            "offsetX": 210.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/July 2026 to June 2027",
+                    "aria/[role=\"combobox\"]"
+                ],
+                [
+                    "#period"
+                ],
+                [
+                    "xpath///*[@id=\"period\"]"
+                ],
+                [
+                    "pierce/#period"
+                ],
+                [
+                    "text/2026-2027"
+                ]
+            ],
+            "offsetY": 18.73332977294922,
+            "offsetX": 210.0333251953125,
+            "frame": [
+                0
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Search"
+                ],
+                [
+                    "button"
+                ],
+                [
+                    "xpath///*[@id=\"TaxCreditCertForm\"]/table[1]/tbody/tr[7]/td/button"
+                ],
+                [
+                    "pierce/button"
+                ],
+                [
+                    "text/Search"
+                ]
+            ],
+            "offsetY": 14.333328247070312,
+            "offsetX": 33.89996337890625,
+            "frame": [
+                0
+            ],
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://ura.go.ug/en/etax-login/",
+                    "title": "Generate PAYE Tax Credit Certificate | eTax - Uganda Revenue Authority"
+                }
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "#bodywrap > div tr:nth-of-type(3) a"
+                ],
+                [
+                    "xpath///*[@id=\"TaxCreditCertForm\"]/table[2]/tbody/tr/td/table/tbody/tr[3]/td[8]/a"
+                ],
+                [
+                    "pierce/#bodywrap > div tr:nth-of-type(3) a"
+                ]
+            ],
+            "offsetY": 13.86663818359375,
+            "offsetX": 12.2498779296875,
+            "frame": [
+                0
+            ]
+        }
+    ]
+}

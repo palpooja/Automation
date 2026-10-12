@@ -1,0 +1,11 @@
+<html><body><h1>Portal home</h1>
+<div id="mailbox"><header><h3>e-Services</h3></header>
+  <ul><li><a href="../../history.html">View Return History</a></li>
+      <li><a href="../../wht.html">Generate Tax Credit Certificate for Withholding</a></li>
+      <li style="display:none"><a href="../../paye.html">Generate Tax Credit Certificate for Pay As You Earn</a></li></ul>
+  <h3>Reports</h3><ul style="display:none" id="rep"><li><a href="../../taxstatement.html">Tax Statement</a></li></ul>
+</div>
+<script>document.querySelectorAll('h3').forEach(h=>{if(h.textContent=='Reports')h.onclick=()=>document.getElementById('rep').style.display='block'})</script>
+<div id="parishMsgA" style="border:1px solid red">Update your parish <button>Skip</button></div>
+<script>document.querySelector('#parishMsgA button').onclick=function(){document.getElementById('parishMsgA').style.display='none'}</script>
+</body></html>

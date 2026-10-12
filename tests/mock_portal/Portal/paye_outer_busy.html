@@ -1,0 +1,9 @@
+<html><body><h2>ura.go.ug (outer page) - PAYE certificates, with a widget frame that the page re-creates now and then</h2>
+<iframe name="portal" id="portal" src="/Portal/genTaxCreditCertController/loadPayePage" style="width:1200px;height:700px"></iframe>
+<div id="widget"></div>
+<script>
+// like a chat or tracking widget: its (empty) frame is replaced every 1.5 s
+setInterval(function () { var w = document.getElementById('widget'); w.innerHTML = '';
+  var f = document.createElement('iframe'); f.src = 'about:blank'; f.width = 1; f.height = 1; w.appendChild(f); }, 1500);
+</script>
+</body></html>
