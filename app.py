@@ -23,6 +23,8 @@ from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 from tkinter.scrolledtext import ScrolledText
 
+VERSION = "10.18"            # shown in the window title and at the top of every run log
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from core import store                                    # noqa: E402
@@ -57,7 +59,7 @@ class App(tk.Tk):
         theme.CURRENT = T
         global FONT, TEXT, MUTED, GREEN
         FONT, TEXT, MUTED, GREEN = T["FONT"], T["ink"], T["muted"], T["accent"]
-        self.title(f"{store.APP_NAME} - Returns, Ledgers, WHT")
+        self.title(f"{store.APP_NAME} {VERSION} - Returns, Ledgers, WHT")
         # fits any screen: 1240x820 where there is room, never larger than the visible screen
         self.S = display.place(self, 1240, 820, 900, 560, maximize_if_small=True)
         self.configure(bg=T["page_bg"])
@@ -557,6 +559,7 @@ class App(tk.Tk):
         self._render_queue()
         self._set_running(True)
         self._clear_log()
+        self.log(f"URA Suite {VERSION}")      # 10.18: which build made this log (a 10.16 log was read as 10.17)
         self.log(f"Run started: {len(run_list)} client(s) x {len(mods)} module(s) "
                  f"= {len(plan)} job(s). Log file: {log_path}")
         for c, m in skipped:

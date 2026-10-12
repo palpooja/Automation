@@ -160,6 +160,8 @@ def test_voice_says_starting_another_between_clients(app, monkeypatch):
     a, app_module, shown = app
     said, ran, log = _run_with_fakes(a, app_module, monkeypatch)
     assert said == [["Job completed.", "Starting another."], ["Job completed."]], said
+    assert f"URA Suite {app_module.VERSION}" in log, "10.18: every run log starts with the build that made it"
+    assert app_module.VERSION in a.title()
 
 
 def test_closing_chrome_by_hand_stops_the_run_cleanly(app, monkeypatch):

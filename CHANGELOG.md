@@ -24,6 +24,10 @@
 - Now: the month is recorded as failed (screenshot `error_<tax>_<month>.png`), Level 2 is reloaded and the next
   month goes on; the failed month is fetched by the end-of-client second try or the next run, as before.
 
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
+
 ### Tests
 - 233 tests, all passing.  New: tests/auto/test_round_two_live_12_oct.py (4); test portal: Portal/history.html
   flags 'deadSearch' / 'dropBoxesAfter', Portal/wht_menu_slow.html and the certificate page's live address
@@ -258,6 +262,10 @@
   engines/wht_crosscheck.py; the Income Tax Level 3 layout is not assumed (TCC No. anywhere in a line, else the
   amount).
 
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
+
 ### Tests
 - 183 tests (175 + 8 new), all passing; the new ones fail on 10.12.
 
@@ -317,6 +325,10 @@ reads that page correctly; the faults were around it:
 - It belongs in `Ledgers\<TIN>\` (as the notes say) and kept the `_months` folder alive. Now written there; a copy
   left by 10.9-10.11 is merged into it at the start of each tax type.
 
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
+
 ### Tests
 - 175 tests (161 + 14 new); the new ones and 4 changed ones failed on 10.11 first. All pass. (In a sandbox
   without internet the 3 run-loop tests in test_window.py wait for ura.go.ug; they pass with the network check
@@ -342,6 +354,10 @@ reads that page correctly; the faults were around it:
 ### Fixed: "Starting another." was never said (10.10)
 - The client counter belonged to an earlier loop, so every client got only "Job completed.". Now counted in the
   loop that runs the clients; tested through the real run loop with two clients.
+
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
 
 ### Tests
 - 161 tests, all passing; new: test_browser_closed.py (4), 3 run-loop tests in test_window.py (real App.start
@@ -374,6 +390,10 @@ reads that page correctly; the faults were around it:
   time per client from the 2nd to the 40th; the activity log box adds 400 lines in about 50 ms at client 2 and
   at client 50. No limit in the code. The practical limit is the security code typed at each client's login.
 
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
+
 ### Tests
 - 154 tests, all passing; new: test_client_import.py (4), test_voice.py (5), test_screen_sizes.py (7, real
   window in virtual screens 1024x768 to 2560x1440 and 150 %), 3 in test_window.py. Each failed first.
@@ -402,6 +422,10 @@ reads that page correctly; the faults were around it:
 - Live: 0 of 27 screen copies identical (the screen box holds 4 tables, the portal's file 1). With option C the
   portal's file takes 1 s, so the check (about 1 s per month) is off: `LEVEL3_SCREEN_CHECK = False`.
 
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
+
 ### Tests
 - 135 tests, all passing; new: tests/auto/test_ledger_tax_head_file.py (5, incl. the real monthly routine on
   the test copy of the live Ledger form). Each failed first.
@@ -428,6 +452,10 @@ reads that page correctly; the faults were around it:
   which only answers while the program works with the browser; a pure wait for the person held every
   request. Manual mode now switches the filter off for the person's browser, and every wait for the person
   (manual mode, `hand_over`, the date question) keeps the browser serviced (`BROWSER_KEEPALIVE`).
+
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
 
 ### Tests
 - 129 tests (122 + 7 new), all passing; each new test failed first. Test copy of the live Ledger form:
@@ -465,6 +493,10 @@ reads that page correctly; the faults were around it:
   end-of-step count. The saved file is always the portal's; nothing changes until every month is identical
   on the live portal (the user's rule: faster only with 100% the same results). `LEVEL3_SCREEN_CHECK = False`
   switches the check off.
+
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
 
 ### Tests
 - 122 tests (108 + 14 new): tests/auto/test_popup_rule.py, tests/auto/test_ledger_month_checks.py; new
@@ -504,6 +536,10 @@ reads that page correctly; the faults were around it:
 ### Fixed - Returns: second page of one client's VAT returns not downloaded (6 of 12)
 - A page turn may now take up to 60 s (180 s in "wait until it downloads"), with a progress line every 30 s
   (`NEXT_PAGE_WAIT_S`); before, about 12-13 s whatever the setting. Live page turns took 6-20 s.
+
+### Also
+- The window title and the first line of every run log show the version ("URA Suite 10.18"): the log of 12 Oct
+  12:56 could not be told from a 10.17 log by its header.
 
 ### Tests
 - 108 tests (95 + 13 new), all passing. The 13 new tests failed on 10.5 first. Old and new engines give identical
